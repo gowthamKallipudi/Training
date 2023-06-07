@@ -1,4 +1,5 @@
 package training1;
+
 import java.util.*;
 
 class Pattern {
