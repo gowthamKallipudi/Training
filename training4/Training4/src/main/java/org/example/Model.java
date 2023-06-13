@@ -12,7 +12,7 @@ public class Model {
     private Statement statement;
     private ResultSet resultSet;
 
-    public Model(JDBCConnection con) throws SQLException, ClassNotFoundException {
+    public Model(JDBCConnection con){
         this.connection = con.getConnections();
     }
 
@@ -21,9 +21,13 @@ public class Model {
         this.customerName = customerName;
     }
 
-    public ResultSet getData() throws SQLException {
-        this.statement = connection.createStatement();
-        this.resultSet = statement.executeQuery("select * from customers");
+    public ResultSet getData() {
+        try{
+            this.statement = connection.createStatement();
+            this.resultSet = statement.executeQuery("select * from customers");
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         return resultSet;
     }
 

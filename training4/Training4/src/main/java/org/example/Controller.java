@@ -14,7 +14,7 @@ public class Controller {
         this.view.setController(this);
     }
 
-    public ResultSet getData() throws SQLException {
+    public ResultSet getData(){
         return model.getData();
     }
 

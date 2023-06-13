@@ -11,11 +11,15 @@ public class View {
         this.controller = controller;
     }
 
-    public void displayData() throws SQLException {
+    public void displayData() {
             rs = controller.getData();
+            try {
             while (rs.next()) {
-            System.out.println(rs.getInt("customerNumber"));
-        }
+                System.out.println(rs.getInt("customerNumber"));
+            }
+        }  catch (Exception exception) {
+                exception.printStackTrace();
+            }
     }
 
 }
