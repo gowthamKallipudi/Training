@@ -25,6 +25,11 @@ public class Main {
                 System.out.println(rs.getInt("employeeNumber"));
             }
             System.out.println("=====================================");
+            rs = statement.executeQuery("select * from customers where customers.customerNumber < 300 union select * from customers where customers.customerNumber > 200");
+            while(rs.next()) {
+                System.out.println(rs.getInt("customerNumber"));
+            }
+            System.out.println("=====================================");
         } catch (Exception e) {
             e.printStackTrace();
         }
