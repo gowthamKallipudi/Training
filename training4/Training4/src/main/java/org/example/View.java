@@ -12,14 +12,15 @@ public class View {
     }
 
     public void displayData() {
-            rs = controller.getData();
-            try {
+        rs = controller.getData();
+        try {
             while (rs.next()) {
                 System.out.println(rs.getInt("customerNumber"));
             }
+            rs.close();
         }  catch (Exception exception) {
-                exception.printStackTrace();
-            }
+            exception.printStackTrace();
+        }
     }
 
 }
