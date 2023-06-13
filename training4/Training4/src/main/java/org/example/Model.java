@@ -2,7 +2,6 @@ package org.example;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Model {
@@ -32,6 +31,7 @@ public class Model {
     }
 
     public void storeData() {
-
+//        need to store data into the database
+//        but dont have custom table to do !!!
     }
 }
