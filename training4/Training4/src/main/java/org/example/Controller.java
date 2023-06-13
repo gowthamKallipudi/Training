@@ -6,6 +6,7 @@ public class Controller {
 
     private Model model;
     private View view;
+    JDBCConnection con = JDBCConnection.getInstance();
 
     public Controller(Model model, View view) {
         this.model = model;
@@ -13,13 +14,15 @@ public class Controller {
         this.view.setController(this);
     }
 
-    public ResultSet getData(){
-        return model.getData();
+    public ResultSet getData() {
+        return con.customerData();
     }
 
-    public void storeData(int customerNumber, String customerName) {
-        model.setData(customerNumber, customerName);
-        model.storeData();
+    public void addData(int customerNumber, String customerName) {
+        model.setCustomerNumber(customerNumber);
+        model.setCustomerName(customerName);
+        con.storeCustomerData(model);
     }
+
 
 }

@@ -7,6 +7,9 @@ public class JDBCConnection {
     private static JDBCConnection connection;
 
     private Connection con;
+
+    private Statement statement = null;
+    private ResultSet resultSet;
     private JDBCConnection() {
 
     }
@@ -29,6 +32,20 @@ public class JDBCConnection {
             exception.printStackTrace();
         }
         return con;
+    }
+
+    public ResultSet customerData() {
+        try{
+            this.statement = JDBCConnection.getInstance().getConnections().createStatement();
+            this.resultSet = statement.executeQuery("select * from customers");
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return resultSet;
+    }
+
+    public void storeCustomerData(Model model) {
+//        need to implement storing of data
     }
 
 }

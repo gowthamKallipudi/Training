@@ -1,13 +1,11 @@
 package org.example;
 
-import java.sql.*;
-
 public class Main {
-    public static void main(String[] args) throws ClassNotFoundException, SQLException {
+    public static void main(String[] args){
 
         JDBCConnection obj = JDBCConnection.getInstance();
 
-        Model model = new Model(obj);
+        Model model = new Model(0, null);
         View view = new View();
         Controller controller = new Controller(model, view);
         view.displayData();

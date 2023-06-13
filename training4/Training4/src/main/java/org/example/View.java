@@ -22,4 +22,8 @@ public class View {
         }
     }
 
+    public void addData() {
+        controller.addData(1, "Gowtham");
+    }
+
 }
