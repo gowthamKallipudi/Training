@@ -1,24 +1,23 @@
 package org.example;
 
-import java.sql.ResultSet;
+import java.util.ArrayList;
 
 public class Controller {
 
-    private Model model;
     private View view;
     JDBCConnection con = JDBCConnection.getInstance();
 
-    public Controller(Model model, View view) {
-        this.model = model;
+    public Controller(View view) {
         this.view = view;
         this.view.setController(this);
     }
 
-    public ResultSet getData() {
+    public ArrayList<Model> getData() {
         return con.customerData();
     }
 
     public void addData(int customerNumber, String customerName) {
+        Model model = new Model();
         model.setCustomerNumber(customerNumber);
         model.setCustomerName(customerName);
         con.storeCustomerData(model);

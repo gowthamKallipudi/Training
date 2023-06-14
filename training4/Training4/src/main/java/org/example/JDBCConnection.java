@@ -1,15 +1,12 @@
 package org.example;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class JDBCConnection {
 
     private static JDBCConnection connection;
 
-    private Connection con;
-
-    private Statement statement = null;
-    private ResultSet resultSet;
     private JDBCConnection() {
 
     }
@@ -22,26 +19,46 @@ public class JDBCConnection {
     }
 
     public Connection getConnections() {
+        Connection con = null;
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             String URL = "jdbc:mysql://localhost/classicmodels";
             String root = "root";
             String pass = "";
-            this.con =  DriverManager.getConnection(URL, root, pass);
+            con =  DriverManager.getConnection(URL, root, pass);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
         return con;
     }
 
-    public ResultSet customerData() {
+    public ArrayList<Model> customerData() {
+        Connection con = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+        ArrayList<Model> data = new ArrayList<>();
         try{
-            this.statement = JDBCConnection.getInstance().getConnections().createStatement();
-            this.resultSet = statement.executeQuery("select * from customers");
-        } catch (Exception exception) {
+            con = this.getConnections();
+            statement = con.createStatement();
+            resultSet = statement.executeQuery("select * from customers");
+            while(resultSet.next()) {
+                data.add(new Model(resultSet.getInt("customerNumber"), resultSet.getString("customerName")));
+            }
+        } catch (SQLException exception) {
             exception.printStackTrace();
+        } finally {
+            try {
+                if (con != null)
+                    con.close();
+                if (statement != null)
+                    statement.close();
+                if (resultSet != null)
+                    resultSet.close();
+            } catch (SQLException sqlException) {
+                sqlException.printStackTrace();
+            }
         }
-        return resultSet;
+        return data;
     }
 
     public void storeCustomerData(Model model) {

@@ -1,12 +1,14 @@
 package org.example;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
-
 public class Model {
     private int customerNumber;
     private String customerName;
+
+    public Model() {
+        this.customerNumber = 0;
+        this.customerName = null;
+    }
+
     public Model(int customerNumber, String customerName) {
         this.customerNumber = customerNumber;
         this.customerName = customerName;
