@@ -42,7 +42,10 @@ public class JDBCConnection {
             statement = con.createStatement();
             resultSet = statement.executeQuery("select * from customers");
             while(resultSet.next()) {
-                data.add(new Model(resultSet.getInt("customerNumber"), resultSet.getString("customerName")));
+                data.add(new Model(resultSet.getInt("customerNumber"), resultSet.getString("customerName")
+                        , resultSet.getString("contactLastName"), resultSet.getString("contactFirstName")
+                        , resultSet.getString("phone"), resultSet.getString("addressLine1")
+                        , resultSet.getString("city"), resultSet.getString("country")));
             }
         } catch (SQLException exception) {
             exception.printStackTrace();
@@ -62,7 +65,34 @@ public class JDBCConnection {
     }
 
     public void storeCustomerData(Model model) {
-//        need to implement storing of data
+        Connection con = null;
+        PreparedStatement statement = null;
+        int num;
+        try {
+            con = this.getConnections();
+            statement = con.prepareStatement("insert into customers (customerNumber, customerName, contactLastName, contactFirstName," +
+                    " phone, addressLine1, city, country) values(?, ?, ?, ?, ?, ?, ?, ?)");
+            statement.setInt(1, model.getCustomerNumber());
+            statement.setString(2, model.getCustomerName());
+            statement.setString(3, model.getContactLastName());
+            statement.setString(4, model.getContactFirstName());
+            statement.setString(5,model.getPhone());
+            statement.setString(6, model.getAddressLine1());
+            statement.setString(7, model.getCity());
+            statement.setString(8, model.getCountry());
+            num = statement.executeUpdate();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        } finally {
+            try {
+                if (con != null)
+                    con.close();
+                if (statement != null)
+                    statement.close();
+            } catch (SQLException sqlException) {
+                sqlException.printStackTrace();
+            }
+        }
     }
 
 }
