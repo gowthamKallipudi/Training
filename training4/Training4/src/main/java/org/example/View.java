@@ -19,7 +19,9 @@ public class View {
     }
 
     public void addData() {
-        controller.addData(1004, "Gowtham", "aaaaa", "bbbbbbbb", "999999", "chennai", "chennai", "india");
+//        given direct assign to check whether the data is storing in database or not !!!
+        controller.addData(1009, "Gowtham", "aaaaa", "bbbbbbbb",
+                "999999", "chennai", "chennai", "india");
     }
 
 }
