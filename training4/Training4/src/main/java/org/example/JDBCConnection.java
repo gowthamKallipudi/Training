@@ -6,6 +6,9 @@ import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 
+/**
+ * Todo: 5) Can we approach Auto closable for this class hence it has resources to handle post process
+ */
 public class JDBCConnection {
 
     BaseConnectionPool connection;

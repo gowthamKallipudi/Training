@@ -3,6 +3,9 @@ package org.example;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Feedback: View looks good
+ */
 public class View {
 
     private Controller controller;
@@ -11,7 +14,7 @@ public class View {
     }
 
     public void start() {
-        try (Scanner scanner = new Scanner(System.in)){
+        try (Scanner scanner = new Scanner(System.in)){//Todo: 5) Suggestion: Always keep the file fully formatted. It will help the other developers who touches the same file.
             boolean applicationStatus = true;
             do {
                 System.out.print("""
