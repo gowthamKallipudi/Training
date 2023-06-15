@@ -8,10 +8,7 @@ import java.util.Scanner;
  */
 public class View {
 
-    private Controller controller;
-    public void setController(Controller controller) {
-        this.controller = controller;
-    }
+    Controller controller = new Controller();
 
     public void start() {
         try (Scanner scanner = new Scanner(System.in)){//Todo: 5) Suggestion: Always keep the file fully formatted. It will help the other developers who touches the same file.
@@ -43,6 +40,10 @@ public class View {
         } catch (Exception exception) {
             exception.printStackTrace();
         }
+    }
+
+    public void stop() {
+        controller.stop();
     }
 
     public void displayData() {

@@ -3,44 +3,63 @@ package org.example;
 import java.sql.*;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  * Todo: 10) Question : Can we approach AutoCloable for this class {@link org.example.BaseConnectionPool}
  */
-public class BaseConnectionPool implements ConnectionPool {
+public class BaseConnectionPool{
     /**
      * Todo: 7) Question : Why do we have these unused variables?
      */
-    private String url;
-    private String user;
-    private String password;
-    private static ArrayList<Connection> connectionPool;
-    private ArrayList<Connection> usedConnection = new ArrayList<>();
-    private static int pool_size = 10;
+
+    private int pool_size = 10;
+
+    private Queue<Connection> connectionQueue = new LinkedList<>();
+
+    private static BaseConnectionPool baseConnectionPool;
+
+    private BaseConnectionPool () {
+
+    }
+
+    public static BaseConnectionPool getInstance() {
+        if(baseConnectionPool == null) {
+            baseConnectionPool = new BaseConnectionPool();
+        }
+        return baseConnectionPool;
+    }
 
     /**
      * Todo: 8) Question :
      * We are exposing {@link org.example.BaseConnectionPool} through singleton. Then why is this constructor open to public.
      * Is there any future Idea for this constructor?
      */
-    public BaseConnectionPool(String url, String user, String password) {
-        this.url = url;
-        this.user = user;
-        this.password = password;
+
+    public Connection getConnection(String url, String  uname, String password) {
+        if(connectionQueue.size() > 0)
+            return connectionQueue.remove();
+        else {
+            try {
+                return createConnection(url, uname, password);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
-    @Override
-    public Connection getConnection() {
-        Connection connection = connectionPool.remove(connectionPool.size() - 1);
-        usedConnection.add(connection);
-        return connection;
-    }
 
-    @Override
-    public boolean releaseConnection(Connection connection) {
-        connectionPool.add(connection);
-        return usedConnection.remove(connection);
+    public void releaseConnection(Connection connection) {
+        if(connectionQueue.size() == pool_size) {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            connectionQueue.add(connection);
+        }
     }
 
     /**
@@ -64,25 +83,13 @@ public class BaseConnectionPool implements ConnectionPool {
      *
      *
      */
-    public static BaseConnectionPool create(String url, String user, String password) throws SQLException {
 
-        ArrayList<Connection> pool = new ArrayList<>(pool_size);
-        for (int i = 0; i < pool_size; i++) {
-            pool.add(createConnection(url, user, password));
-        }
-        connectionPool = pool;
-        return new BaseConnectionPool(url, user, password);
-    }
-
-    private static Connection createConnection(String url, String user, String password) throws SQLException {
+    private Connection createConnection(String url, String user, String password) throws SQLException {
         return DriverManager.getConnection(url, user, password);
     }
 
     public void shutdown() throws SQLException {
-        for(Connection con : usedConnection) {
-            releaseConnection(con);
-        }
-        for(Connection con : connectionPool) {
+        for(Connection con : connectionQueue) {
             con.close();
         }
     }

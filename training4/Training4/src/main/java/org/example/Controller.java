@@ -7,12 +7,6 @@ import java.util.ArrayList;
  */
 public class Controller {
 
-    private View view;
-    JDBCConnection con;
-
-    public Controller(View view) {
-        this.view = view;
-        this.view.setController(this);
         /**
          * Todo: 3)
          * Why are we keeping a Connection all the time?
@@ -20,19 +14,18 @@ public class Controller {
          * So your closing connection after doing all the operation, when any of the 'm' function is in use or View is doing some read or write activities, the DB connection would be
          * Idle which inefficient and costly. So create connection based on the function
          */
-        this.con = new JDBCConnection();
-    }
+
 
     public ArrayList<Model> getData() {
-        return con.customerData();
+        return JDBCConnection.getInstance().customerData();
     }
 
     public void addData(Model model) {
-        con.storeCustomerData(model);
+        JDBCConnection.getInstance().storeCustomerData(model);
     }
 
     public void stop() {
-        con.closeConnections();
+        JDBCConnection.getInstance().closeConnections();
     }
 
 }

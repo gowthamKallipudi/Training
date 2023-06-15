@@ -11,8 +11,13 @@ import java.util.ArrayList;
  */
 public class JDBCConnection {
 
-    BaseConnectionPool connection;
-    public JDBCConnection () {
+    private String url;
+    private String uname;
+    private String password;
+
+    private static JDBCConnection jdbcConnection;
+
+    private JDBCConnection () {
         InputStream inputStream = null;
         try {
             ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
@@ -21,8 +26,9 @@ public class JDBCConnection {
             String url = ini.get("database", "dbURL", String.class);
             String uname = ini.get("database", "uname", String.class);
             String password = ini.get("database", "password", String.class);
-
-            this.connection = BaseConnectionPool.create(url, uname, password);
+            this.url = url;
+            this.uname = uname;
+            this.password = password;
         } catch (Exception exception) {
             exception.printStackTrace();
         } finally {
@@ -35,9 +41,16 @@ public class JDBCConnection {
         }
     }
 
+    public static JDBCConnection getInstance() {
+        if(jdbcConnection == null) {
+            jdbcConnection = new JDBCConnection();
+        }
+        return jdbcConnection;
+    }
+
     public void closeConnections() {
         try {
-            connection.shutdown();
+            BaseConnectionPool.getInstance().shutdown();
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
@@ -49,7 +62,7 @@ public class JDBCConnection {
         ResultSet resultSet = null;
         ArrayList<Model> data = new ArrayList<>();
         try{
-            con = connection.getConnection();
+            con = BaseConnectionPool.getInstance().getConnection(url, uname, password);
             statement = con.createStatement();
             resultSet = statement.executeQuery("select * from customers");
             while(resultSet.next()) {
@@ -62,7 +75,7 @@ public class JDBCConnection {
             exception.printStackTrace();
         } finally {
             try {
-                connection.releaseConnection(con);
+                BaseConnectionPool.getInstance().releaseConnection(con);
                 if (statement != null)
                     statement.close();
                 if (resultSet != null)
@@ -78,7 +91,7 @@ public class JDBCConnection {
         Connection con = null;
         PreparedStatement statement = null;
         try {
-            con = connection.getConnection();
+            con = BaseConnectionPool.getInstance().getConnection(url, uname, password);
             statement = con.prepareStatement("insert into customers (customerNumber, customerName, contactLastName, contactFirstName," +
                     " phone, addressLine1, city, country) values(?, ?, ?, ?, ?, ?, ?, ?)");
             statement.setInt(1, model.getCustomerNumber());
@@ -94,7 +107,7 @@ public class JDBCConnection {
             exception.printStackTrace();
         } finally {
             try {
-                connection.releaseConnection(con);
+                BaseConnectionPool.getInstance().releaseConnection(con);
                 if (statement != null)
                     statement.close();
             } catch (SQLException sqlException) {

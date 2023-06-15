@@ -21,7 +21,8 @@ public class Model {
         this.country = null;
     }
 
-    public Model(int customerNumber, String customerName, String contactLastName, String contactFirstName, String phone, String addressLine1, String city, String country) {
+    public Model(int customerNumber, String customerName, String contactLastName, String contactFirstName,
+                 String phone, String addressLine1, String city, String country) {
         this.customerNumber = customerNumber;
         this.customerName = customerName;
         this.contactLastName = contactLastName;
