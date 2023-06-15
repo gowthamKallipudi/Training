@@ -1,13 +1,43 @@
 package org.example;
 
+import org.ini4j.Wini;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 
 public class JDBCConnection {
 
-    BaseConnectionPool connection = null;
-    public JDBCConnection(BaseConnectionPool connection) {
-        this.connection = connection;
+    BaseConnectionPool connection;
+    public JDBCConnection () {
+        InputStream inputStream = null;
+        try {
+            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+            inputStream = classLoader.getResourceAsStream("db.ini");
+            Wini ini = new Wini(inputStream);
+            String url = ini.get("database", "dbURL", String.class);
+            String uname = ini.get("database", "uname", String.class);
+            String password = ini.get("database", "password", String.class);
+
+            this.connection = BaseConnectionPool.create(url, uname, password);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        } finally {
+            try {
+                if (inputStream != null)
+                    inputStream.close();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        }
+    }
+
+    public void closeConnections() {
+        try {
+            connection.shutdown();
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
     }
 
     public ArrayList<Model> customerData() {
