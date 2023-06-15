@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"org.example","l":"BaseConnectionPool"},{"p":"org.example","l":"ConnectionPool"},{"p":"org.example","l":"Controller"},{"p":"org.example","l":"JDBCConnection"},{"p":"org.example","l":"Main"},{"p":"org.example","l":"Model"},{"p":"org.example","l":"View"}];updateSearchResults();
