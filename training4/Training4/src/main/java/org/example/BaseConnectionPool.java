@@ -4,7 +4,6 @@ import java.sql.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class BaseConnectionPool implements ConnectionPool {
     private String url;
@@ -33,7 +32,6 @@ public class BaseConnectionPool implements ConnectionPool {
         return usedConnection.remove(connection);
     }
 
-
     public static BaseConnectionPool create(String url, String user, String password) throws SQLException {
 
         ArrayList<Connection> pool = new ArrayList<>(pool_size);
@@ -43,7 +41,6 @@ public class BaseConnectionPool implements ConnectionPool {
         connectionPool = pool;
         return new BaseConnectionPool(url, user, password);
     }
-
 
     private static Connection createConnection(String url, String user, String password) throws SQLException {
         return DriverManager.getConnection(url, user, password);
@@ -57,6 +54,5 @@ public class BaseConnectionPool implements ConnectionPool {
             con.close();
         }
     }
-
 
 }
