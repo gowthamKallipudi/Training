@@ -10,7 +10,7 @@ import java.util.Queue;
 /**
  * Todo: 10) Question : Can we approach AutoCloable for this class {@link org.example.BaseConnectionPool}
  */
-public class BaseConnectionPool {
+public class BasicConnectionPool {
     /**
      * Todo: 7) Question : Why do we have these unused variables?
      */
@@ -21,17 +21,17 @@ public class BaseConnectionPool {
 
     private ArrayList<Connection> inUseConnection = new ArrayList<>();
 
-    private static BaseConnectionPool baseConnectionPool;
+    private static BasicConnectionPool basicConnectionPool;
 
-    private BaseConnectionPool() {
+    private BasicConnectionPool() {
 
     }
 
-    public static BaseConnectionPool getInstance() {
-        if (baseConnectionPool == null) {
-            baseConnectionPool = new BaseConnectionPool();
+    public static BasicConnectionPool getInstance() {
+        if (basicConnectionPool == null) {
+            basicConnectionPool = new BasicConnectionPool();
         }
-        return baseConnectionPool;
+        return basicConnectionPool;
     }
 
     /**
@@ -40,7 +40,7 @@ public class BaseConnectionPool {
      * Is there any future Idea for this constructor?
      */
 
-    public Connection getConnection(String url, String uname, String password) {
+    public Connection getConnection() {
         Connection con;
         if (connectionQueue.size() > 0) {
             con = connectionQueue.remove();
@@ -48,7 +48,7 @@ public class BaseConnectionPool {
             return con;
         } else {
             try {
-                con = createConnection(url, uname, password);
+                con = createConnection();
                 inUseConnection.add(con);
                 return con;
             } catch (SQLException e) {
@@ -92,8 +92,8 @@ public class BaseConnectionPool {
      * </ol>
      */
 
-    private Connection createConnection(String url, String user, String password) throws SQLException {
-        return DriverManager.getConnection(url, user, password);
+    private Connection createConnection() throws SQLException {
+        return DriverManager.getConnection(DBProperties.url, DBProperties.uname, DBProperties.password);
     }
 
     public void shutdown() throws SQLException {

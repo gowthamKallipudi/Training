@@ -16,16 +16,24 @@ public class Controller {
      */
 
 
-    public ArrayList<Model> getData() {
-        return JDBCConnection.getInstance().customerData();
+    public ArrayList<CustomerModel> getData() {
+        return DBHelper.getInstance().customerData();
     }
 
-    public void addData(Model model) {
-        JDBCConnection.getInstance().storeCustomerData(model);
+    public void addData(CustomerModel model) {
+        DBHelper.getInstance().storeCustomerData(model);
+    }
+
+    public ArrayList<EmployeeModel> getEmployeeData() {
+        return DBHelper.getInstance().fetchEmployeeData();
+    }
+
+    public void addEmployeeData(EmployeeModel employeeModel) {
+        DBHelper.getInstance().storeEmployeeData(employeeModel);
     }
 
     public void stop() {
-        JDBCConnection.getInstance().closeConnections();
+        DBHelper.getInstance().closeConnections();
     }
 
 }
