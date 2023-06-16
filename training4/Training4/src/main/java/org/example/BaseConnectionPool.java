@@ -3,13 +3,14 @@ package org.example;
 import java.sql.*;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
 /**
  * Todo: 10) Question : Can we approach AutoCloable for this class {@link org.example.BaseConnectionPool}
  */
-public class BaseConnectionPool{
+public class BaseConnectionPool {
     /**
      * Todo: 7) Question : Why do we have these unused variables?
      */
@@ -18,14 +19,16 @@ public class BaseConnectionPool{
 
     private Queue<Connection> connectionQueue = new LinkedList<>();
 
+    private ArrayList<Connection> inUseConnection = new ArrayList<>();
+
     private static BaseConnectionPool baseConnectionPool;
 
-    private BaseConnectionPool () {
+    private BaseConnectionPool() {
 
     }
 
     public static BaseConnectionPool getInstance() {
-        if(baseConnectionPool == null) {
+        if (baseConnectionPool == null) {
             baseConnectionPool = new BaseConnectionPool();
         }
         return baseConnectionPool;
@@ -37,12 +40,17 @@ public class BaseConnectionPool{
      * Is there any future Idea for this constructor?
      */
 
-    public Connection getConnection(String url, String  uname, String password) {
-        if(connectionQueue.size() > 0)
-            return connectionQueue.remove();
-        else {
+    public Connection getConnection(String url, String uname, String password) {
+        Connection con;
+        if (connectionQueue.size() > 0) {
+            con = connectionQueue.remove();
+            inUseConnection.add(con);
+            return con;
+        } else {
             try {
-                return createConnection(url, uname, password);
+                con = createConnection(url, uname, password);
+                inUseConnection.add(con);
+                return con;
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
@@ -51,13 +59,15 @@ public class BaseConnectionPool{
 
 
     public void releaseConnection(Connection connection) {
-        if(connectionQueue.size() == pool_size) {
+        inUseConnection.remove(connection);
+        if (connectionQueue.size() == pool_size) {
             try {
                 connection.close();
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
         } else {
+
             connectionQueue.add(connection);
         }
     }
@@ -80,8 +90,6 @@ public class BaseConnectionPool{
      *         If yes, remove the old connection and close it. For this you can use Queue instead of List.
      *     </li>
      * </ol>
-     *
-     *
      */
 
     private Connection createConnection(String url, String user, String password) throws SQLException {
@@ -89,9 +97,11 @@ public class BaseConnectionPool{
     }
 
     public void shutdown() throws SQLException {
-        for(Connection con : connectionQueue) {
+        for (Connection con : inUseConnection) {
+            con.close();
+        }
+        for (Connection con : connectionQueue) {
             con.close();
         }
     }
-
 }

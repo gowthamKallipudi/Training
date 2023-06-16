@@ -11,7 +11,7 @@ public class View {
     Controller controller = new Controller();
 
     public void start() {
-        try (Scanner scanner = new Scanner(System.in)){//Todo: 5) Suggestion: Always keep the file fully formatted. It will help the other developers who touches the same file.
+        try (Scanner scanner = new Scanner(System.in)) {//Todo: 5) Suggestion: Always keep the file fully formatted. It will help the other developers who touches the same file.
             boolean applicationStatus = true;
             do {
                 System.out.print("""
@@ -48,7 +48,7 @@ public class View {
 
     public void displayData() {
         ArrayList<Model> data = controller.getData();
-        for(Model model: data) {
+        for (Model model : data) {
             System.out.println(model.getCustomerNumber() + " " + model.getCustomerName() + " " + model.getContactLastName() + " "
                     + model.getContactFirstName() + " " + model.getPhone() + " " + model.getAddressLine1() + " " + model.getCity() + " "
                     + model.getCountry());
