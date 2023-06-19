@@ -28,12 +28,24 @@ public class Controller {
         DBHelper.closeConnections();
     }
 
-    public String printJson() { //for checking json values
+    public String printCustomerJson() { //for checking json values
         ArrayList<Customer> customers = DBHelper.customerData();
         ObjectMapper objectMapper = new ObjectMapper();
         String out = null;
         try {
             out = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(customers);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return out;
+    }
+
+    public String printEmployeeJson() { //for checking json values
+        ArrayList<Employee> employees = DBHelper.fetchEmployeeData();
+        ObjectMapper objectMapper = new ObjectMapper();
+        String out = null;
+        try {
+            out = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(employees);
         } catch (Exception exception) {
             exception.printStackTrace();
         }

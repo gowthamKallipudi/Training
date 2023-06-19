@@ -13,7 +13,6 @@ public class View {
     public void start() {
         try (Scanner scanner = new Scanner(System.in)) {
             boolean applicationStatus = true;
-            printJson(); // for checking json values
             do {
                 System.out.print("""
                         Welcome to the Application
@@ -22,7 +21,9 @@ public class View {
                           2.Add Customer Data
                           3.Print Employee Data
                           4.Add Employee Data
-                          5.Exit
+                          5.Customer Data - JSON Format
+                          6.Employee Data - JSON Format
+                          7.Exit
                         Your Option :\s""");
                 int option = Integer.parseInt(scanner.nextLine());
                 switch (option) {
@@ -39,6 +40,12 @@ public class View {
                         this.addEmployeeData(scanner);
                         break;
                     case 5:
+                        this.printCustomerJson(); // for checking json values
+                        break;
+                    case 6:
+                        this.printEmployeeJson(); // for checking json values
+                        break;
+                    case 7:
                         applicationStatus = false;
                         break;
                     default:
@@ -119,8 +126,13 @@ public class View {
         controller.addEmployeeData(employee);
     }
 
-    public void printJson() { //for checking json values
-        String data = controller.printJson();
+    public void printCustomerJson() { //for checking json values
+        String data = controller.printCustomerJson();
+        System.out.println(data);
+    }
+
+    public void printEmployeeJson() { //for checking json values
+        String data = controller.printEmployeeJson();
         System.out.println(data);
     }
 }
