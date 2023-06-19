@@ -1,18 +1,19 @@
 package org.example;
 
+import org.example.models.Customer;
+import org.example.models.Employee;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
-/**
- * Feedback: View looks good
- */
 public class View {
 
     Controller controller = new Controller();
 
     public void start() {
-        try (Scanner scanner = new Scanner(System.in)) {//Todo: 5) Suggestion: Always keep the file fully formatted. It will help the other developers who touches the same file.
+        try (Scanner scanner = new Scanner(System.in)) {
             boolean applicationStatus = true;
+            printJson(); // for checking json values
             do {
                 System.out.print("""
                         Welcome to the Application
@@ -55,66 +56,71 @@ public class View {
     }
 
     public void displayCustomerData() {
-        ArrayList<CustomerModel> data = controller.getData();
-        for (CustomerModel model : data) {
-            System.out.println(model.getCustomerNumber() + " " + model.getCustomerName() + " " + model.getContactLastName()
-                    + " " + model.getContactFirstName() + " " + model.getPhone() + " " + model.getAddressLine1() + " "
-                    + model.getCity() + " " + model.getCountry());
+        ArrayList<Customer> data = controller.getData();
+        for (Customer customer : data) {
+            System.out.println(customer.getCustomerNumber() + " " + customer.getCustomerName() + " " + customer.getContactLastName()
+                    + " " + customer.getContactFirstName() + " " + customer.getPhone() + " " + customer.getAddressLine1() + " "
+                    + customer.getCity() + " " + customer.getCountry());
         }
     }
 
     public void addCustomerData(Scanner scanner) {
-        CustomerModel model = new CustomerModel();
+        Customer customer = new Customer();
 
         System.out.println("Add the data to enter");
         System.out.print("Enter your customer number : ");
-        model.setCustomerNumber(Integer.parseInt(scanner.nextLine()));
+        customer.setCustomerNumber(Integer.parseInt(scanner.nextLine()));
         System.out.print("Enter the name : ");
-        model.setCustomerName(scanner.nextLine());
+        customer.setCustomerName(scanner.nextLine());
         System.out.print("Enter contactLastName : ");
-        model.setContactLastName(scanner.nextLine());
+        customer.setContactLastName(scanner.nextLine());
         System.out.print("Enter contactFirstName : ");
-        model.setContactFirstName(scanner.nextLine());
+        customer.setContactFirstName(scanner.nextLine());
         System.out.print("Enter phone number : ");
-        model.setPhone(scanner.nextLine());
+        customer.setPhone(scanner.nextLine());
         System.out.print("Enter address line : ");
-        model.setAddressLine1(scanner.nextLine());
+        customer.setAddressLine1(scanner.nextLine());
         System.out.print("Enter your city : ");
-        model.setCity(scanner.nextLine());
+        customer.setCity(scanner.nextLine());
         System.out.print("Enter your country : ");
-        model.setCountry(scanner.nextLine());
+        customer.setCountry(scanner.nextLine());
 
-        controller.addData(model);
+        controller.addData(customer);
     }
 
     public void displayEmployeeData() {
-        ArrayList<EmployeeModel> data = controller.getEmployeeData();
-        for (EmployeeModel employeeModel : data) {
-            System.out.println(employeeModel.getEmployeeNumber() + " " + employeeModel.getLastName() + " " +
-                    employeeModel.getFirstName() + " " + employeeModel.getExtension() + " " + employeeModel.getEmail()
-                    + " " + employeeModel.getOfficeCode() + " " + employeeModel.getJobTitle());
+        ArrayList<Employee> data = controller.getEmployeeData();
+        for (Employee employee : data) {
+            System.out.println(employee.getEmployeeNumber() + " " + employee.getLastName() + " " +
+                    employee.getFirstName() + " " + employee.getExtension() + " " + employee.getEmail()
+                    + " " + employee.getOfficeCode() + " " + employee.getJobTitle());
         }
     }
 
     public void addEmployeeData(Scanner scanner) {
-        EmployeeModel employeeModel = new EmployeeModel();
+        Employee employee = new Employee();
 
         System.out.println("Add the data to enter");
         System.out.print("Enter your employee number : ");
-        employeeModel.setEmployeeNumber(Integer.parseInt(scanner.nextLine()));
+        employee.setEmployeeNumber(Integer.parseInt(scanner.nextLine()));
         System.out.print("Enter the lastName : ");
-        employeeModel.setLastName(scanner.nextLine());
+        employee.setLastName(scanner.nextLine());
         System.out.print("Enter firstName : ");
-        employeeModel.setFirstName(scanner.nextLine());
+        employee.setFirstName(scanner.nextLine());
         System.out.print("Enter extension : ");
-        employeeModel.setExtension(scanner.nextLine());
+        employee.setExtension(scanner.nextLine());
         System.out.print("Enter email : ");
-        employeeModel.setEmail(scanner.nextLine());
+        employee.setEmail(scanner.nextLine());
         System.out.print("Enter officeCode : ");
-        employeeModel.setOfficeCode(scanner.nextLine());
+        employee.setOfficeCode(scanner.nextLine());
         System.out.print("Enter jobTitle : ");
-        employeeModel.setJobTitle(scanner.nextLine());
+        employee.setJobTitle(scanner.nextLine());
 
-        controller.addEmployeeData(employeeModel);
+        controller.addEmployeeData(employee);
+    }
+
+    public void printJson() { //for checking json values
+        String data = controller.printJson();
+        System.out.println(data);
     }
 }

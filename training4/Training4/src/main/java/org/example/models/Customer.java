@@ -1,6 +1,7 @@
-package org.example;
+package org.example.models;
 
-public class CustomerModel {
+public class Customer {
+
     private int customerNumber;
     private String customerName;
     private String contactLastName;
@@ -10,18 +11,11 @@ public class CustomerModel {
     private String city;
     private String country;
 
-    public CustomerModel() {
-        this.customerNumber = 0;
-        this.customerName = null;
-        this.contactLastName = null;
-        this.contactFirstName = null;
-        this.phone = null;
-        this.addressLine1 = null;
-        this.city = null;
-        this.country = null;
+    public Customer() {
+
     }
 
-    public CustomerModel(int customerNumber, String customerName, String contactLastName, String contactFirstName,
+    public Customer(int customerNumber, String customerName, String contactLastName, String contactFirstName,
                          String phone, String addressLine1, String city, String country) {
         this.customerNumber = customerNumber;
         this.customerName = customerName;

@@ -1,6 +1,6 @@
-package org.example;
+package org.example.models;
 
-public class EmployeeModel {
+public class Employee {
     private int employeeNumber;
     private String lastName;
     private String firstName;
@@ -9,17 +9,11 @@ public class EmployeeModel {
     private String officeCode;
     private String jobTitle;
 
-    public EmployeeModel() {
-        this.employeeNumber = 0;
-        this.lastName = null;
-        this.firstName = null;
-        this.extension = null;
-        this.email = null;
-        this.officeCode = null;
-        this.jobTitle = null;
+    public Employee() {
+
     }
 
-    public EmployeeModel(int employeeNumber, String lastName, String firstName, String extension,
+    public Employee(int employeeNumber, String lastName, String firstName, String extension,
                          String email, String officeCode, String jobTitle) {
         this.employeeNumber = employeeNumber;
         this.lastName = lastName;

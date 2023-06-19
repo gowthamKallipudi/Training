@@ -1,27 +1,14 @@
 package org.example;
 
+import org.example.models.Customer;
+import org.example.models.Employee;
+
 import java.sql.*;
 import java.util.ArrayList;
 
-/**
- * Todo: 5) Can we approach Auto closable for this class hence it has resources to handle post process
- */
 public class DBHelper {
 
-    private static DBHelper dbHelper;
-
-    private DBHelper() {
-
-    }
-
-    public static DBHelper getInstance() {
-        if (dbHelper == null) {
-            dbHelper = new DBHelper();
-        }
-        return dbHelper;
-    }
-
-    public void closeConnections() {
+    public static void closeConnections() {
         try {
             BasicConnectionPool.getInstance().shutdown();
         } catch (SQLException sqlException) {
@@ -29,13 +16,13 @@ public class DBHelper {
         }
     }
 
-    public ArrayList<CustomerModel> customerData() {
+    public static ArrayList<Customer> customerData() {
         Connection con = BasicConnectionPool.getInstance().getConnection();
-        ArrayList<CustomerModel> data = new ArrayList<>();
+        ArrayList<Customer> data = new ArrayList<>();
         try (Statement statement = con.createStatement();
              ResultSet resultSet = statement.executeQuery("select * from customers")) {
             while (resultSet.next()) {
-                data.add(new CustomerModel(resultSet.getInt("customerNumber"), resultSet.getString("customerName")
+                data.add(new Customer(resultSet.getInt("customerNumber"), resultSet.getString("customerName")
                         , resultSet.getString("contactLastName"), resultSet.getString("contactFirstName")
                         , resultSet.getString("phone"), resultSet.getString("addressLine1")
                         , resultSet.getString("city"), resultSet.getString("country")));
@@ -48,19 +35,19 @@ public class DBHelper {
         return data;
     }
 
-    public void storeCustomerData(CustomerModel model) {
+    public static void storeCustomerData(Customer customer) {
         Connection con = BasicConnectionPool.getInstance().getConnection();
         try (PreparedStatement statement = con.prepareStatement("insert into customers (customerNumber, customerName," +
                 " contactLastName, contactFirstName, phone, addressLine1, city, country) values(?, ?, ?, ?, ?, ?, ?, ?)")) {
 
-            statement.setInt(1, model.getCustomerNumber());
-            statement.setString(2, model.getCustomerName());
-            statement.setString(3, model.getContactLastName());
-            statement.setString(4, model.getContactFirstName());
-            statement.setString(5, model.getPhone());
-            statement.setString(6, model.getAddressLine1());
-            statement.setString(7, model.getCity());
-            statement.setString(8, model.getCountry());
+            statement.setInt(1, customer.getCustomerNumber());
+            statement.setString(2, customer.getCustomerName());
+            statement.setString(3, customer.getContactLastName());
+            statement.setString(4, customer.getContactFirstName());
+            statement.setString(5, customer.getPhone());
+            statement.setString(6, customer.getAddressLine1());
+            statement.setString(7, customer.getCity());
+            statement.setString(8, customer.getCountry());
             statement.executeUpdate();
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -69,13 +56,13 @@ public class DBHelper {
         }
     }
 
-    public ArrayList<EmployeeModel> fetchEmployeeData() {
+    public static ArrayList<Employee> fetchEmployeeData() {
         Connection con = BasicConnectionPool.getInstance().getConnection();
-        ArrayList<EmployeeModel> data = new ArrayList<>();
+        ArrayList<Employee> data = new ArrayList<>();
         try (Statement statement = con.createStatement();
              ResultSet resultSet = statement.executeQuery("select * from employees")) {
             while (resultSet.next()) {
-                data.add(new EmployeeModel(resultSet.getInt("employeeNumber"), resultSet.getString("lastName")
+                data.add(new Employee(resultSet.getInt("employeeNumber"), resultSet.getString("lastName")
                         , resultSet.getString("firstName"), resultSet.getString("extension")
                         , resultSet.getString("email"), resultSet.getString("officeCode")
                         , resultSet.getString("jobTitle")));
@@ -88,18 +75,18 @@ public class DBHelper {
         return data;
     }
 
-    public void storeEmployeeData(EmployeeModel employeeModel) {
+    public static void storeEmployeeData(Employee employee) {
         Connection con = BasicConnectionPool.getInstance().getConnection();
         try (PreparedStatement statement = con.prepareStatement("insert into employees (employeeNumber, lastName," +
                 " firstName, extension, email, officeCode, jobTitle) values(?, ?, ?, ?, ?, ?, ?)")) {
 
-            statement.setInt(1, employeeModel.getEmployeeNumber());
-            statement.setString(2, employeeModel.getLastName());
-            statement.setString(3, employeeModel.getFirstName());
-            statement.setString(4, employeeModel.getExtension());
-            statement.setString(5, employeeModel.getEmail());
-            statement.setString(6, employeeModel.getOfficeCode());
-            statement.setString(7, employeeModel.getJobTitle());
+            statement.setInt(1, employee.getEmployeeNumber());
+            statement.setString(2, employee.getLastName());
+            statement.setString(3, employee.getFirstName());
+            statement.setString(4, employee.getExtension());
+            statement.setString(5, employee.getEmail());
+            statement.setString(6, employee.getOfficeCode());
+            statement.setString(7, employee.getJobTitle());
             statement.executeUpdate();
         } catch (Exception exception) {
             exception.printStackTrace();
