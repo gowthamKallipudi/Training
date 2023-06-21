@@ -7,14 +7,16 @@ import jakarta.persistence.*;
 public class RegisterModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(unique = true)
     private String userName;
     private String emailId;
     private String phoneNumber;
     private String password;
 
     public RegisterModel() {
+
     }
 
     public RegisterModel(long id, String userName, String emailId, String phoneNumber, String password) {

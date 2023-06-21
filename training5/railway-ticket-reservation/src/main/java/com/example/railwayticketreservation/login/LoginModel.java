@@ -1,11 +1,11 @@
-package com.example.railwayticketreservation.Login;
-
+package com.example.railwayticketreservation.login;
 
 public class LoginModel {
     private String userName;
     private String password;
 
     public LoginModel() {
+
     }
 
     public LoginModel(String userName, String password) {
