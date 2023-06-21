@@ -1,4 +1,4 @@
-package com.example.railwayticketreservation.login;
+package com.example.railwayticketreservation.Login;
 
 import com.example.railwayticketreservation.Register.RegisterModel;
 import com.example.railwayticketreservation.Register.RegisterRepository;
@@ -18,11 +18,11 @@ public class LoginController {
     RegisterRepository registerRepository;
 
     @PostMapping("api/checkUser")
-    public ResponseEntity<String> checkUser(@RequestBody LoginModel loginModel) {
+    public ResponseEntity<?> checkUser(@RequestBody LoginModel loginModel) {
         Optional<RegisterModel> user = registerRepository.findByUserName(loginModel.getUserName());
         if (user.isPresent() && user.get().getUserName().compareTo(loginModel.getUserName()) == 0 &&
                 user.get().getPassword().compareTo(loginModel.getPassword()) == 0) {
-            return new ResponseEntity<>("User Authenticated", HttpStatus.OK);
+            return new ResponseEntity<>(user.get(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>("User Not Authenticated", HttpStatus.UNAUTHORIZED);
         }

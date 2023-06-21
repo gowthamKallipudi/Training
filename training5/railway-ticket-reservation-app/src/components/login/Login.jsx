@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./login.css";
+import { auth } from "../../utilities/authentication";
 
 const initialData = {
   userName: "",
@@ -11,6 +12,9 @@ const Login = () => {
   const [loginData, setLoginData] = useState(initialData);
   const [prompt, setPrompt] = useState(false);
   const navigate = useNavigate();
+  useEffect(() => {
+    console.log(auth.getState());
+  }, []);
 
   const sendData = async (e) => {
     e.preventDefault();
@@ -22,9 +26,15 @@ const Login = () => {
       },
       body: JSON.stringify(loginData),
     });
-    console.log(response);
+    const data = await response.json();
+    console.log(data);
     if (response.status === 200) {
-      navigate("/home");
+      auth.dispatch({
+        type: "Login",
+        payload: data,
+      });
+      console.log(auth.getState());
+      navigate("/dashboard");
     } else {
       setPrompt(true);
     }

@@ -25,4 +25,14 @@ public class RegisterController {
             return new ResponseEntity<>("User Data Added Successfully", HttpStatus.CREATED);
         }
     }
+
+    @GetMapping("api/getUser/{name}")
+    public ResponseEntity<RegisterModel> getUser(@PathVariable("name") String userName) {
+        Optional<RegisterModel> user = registerRepository.findByUserName(userName);
+        if (user.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(user.get(), HttpStatus.OK);
+        }
+    }
 }
