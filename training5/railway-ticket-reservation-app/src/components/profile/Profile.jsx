@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import NavBar from "../navbar/NavBar";
-import { auth } from "../../utilities/authentication";
+import { auth, checkAuth } from "../../utilities/authentication";
 import { Navigate } from "react-router-dom";
+import "./profile.css";
 
 const Profile = () => {
   const [profileData, setProfileData] = useState(null);
 
   useEffect(() => {
-    fetchProfile();
+    if (checkAuth()) fetchProfile();
   }, []);
 
   const state = auth.getState();
@@ -32,19 +33,28 @@ const Profile = () => {
   return (
     <>
       <NavBar />
-      <div>In Profile Page</div>
+      <div className="profile-heading">My Profile</div>
       {profileData == null ? (
         <div>No data found</div>
       ) : (
         <div>
-          <label>User Name : </label>
-          {profileData.userName}
-          <br />
-          <label>Email Id : </label>
-          {profileData.emailId}
-          <br />
-          <label>Phone Number : </label>
-          {profileData.phoneNumber}
+          <table className="profile-table">
+            <thead>
+              <th colSpan={2}>Profile</th>
+            </thead>
+            <tr>
+              <td>User Name </td>
+              <td>{profileData.userName}</td>
+            </tr>
+            <tr>
+              <td>Email Id </td>
+              <td>{profileData.emailId}</td>
+            </tr>
+            <tr>
+              <td>Phone Number </td>
+              <td>{profileData.phoneNumber}</td>
+            </tr>
+          </table>
         </div>
       )}
     </>

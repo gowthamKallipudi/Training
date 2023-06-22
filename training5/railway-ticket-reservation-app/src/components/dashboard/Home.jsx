@@ -2,6 +2,7 @@ import React from "react";
 import NavBar from "../navbar/NavBar";
 import { auth } from "../../utilities/authentication";
 import { Navigate } from "react-router-dom";
+import "./home.css";
 
 const Home = () => {
   const state = auth.getState();
@@ -11,7 +12,7 @@ const Home = () => {
   return (
     <>
       <NavBar />
-      <div>Welcome To Train Ticket Reservation Application</div>
+      <div className="welcome-text">Welcome To Train Ticket Reservation Application</div>
     </>
   );
 };

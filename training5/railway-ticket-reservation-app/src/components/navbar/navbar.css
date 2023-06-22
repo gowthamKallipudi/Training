@@ -1,0 +1,19 @@
+.navbar-container {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 2%;
+}
+
+.navbar-container button {
+  background-color: orangered;
+  border: none;
+  color: aliceblue;
+  padding: 15px 30px;
+  border-radius: 5%;
+}
+
+.navbar-container button:hover {
+  background-color: #4caf50;
+  padding: 13px 28px;
+  border: 2px solid rgba(46, 5, 5, 0.496);
+}

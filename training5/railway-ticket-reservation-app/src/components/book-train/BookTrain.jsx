@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
 import NavBar from "../navbar/NavBar";
-import { auth } from "../../utilities/authentication";
+import { auth, checkAuth } from "../../utilities/authentication";
 import { Navigate } from "react-router-dom";
+import "./booktrain.css";
 
 const BookTrain = () => {
   const [trainData, setTrainData] = useState(null);
   const [profileData, setProfileData] = useState(null);
 
   useEffect(() => {
-    fetchTrains();
-    fetchProfile();
+    if (checkAuth) {
+      fetchTrains();
+      fetchProfile();
+    }
   }, []);
 
   const state = auth.getState();
@@ -61,36 +64,44 @@ const BookTrain = () => {
   return (
     <>
       <NavBar />
-      <div>In Book Train Page</div>
       {trainData == null ? (
         <div>No Data Found</div>
       ) : (
-        trainData.map((eachTrain) => {
-          return (
-            <div key={eachTrain.id}>
-              <label>Train Number : </label>
-              {eachTrain.trainNumber}
-              <br />
-              <label>Train Name : </label>
-              {eachTrain.trainName}
-              <br />
-              <label>Train Source : </label>
-              {eachTrain.source}
-              <br />
-              <label>Train Destination : </label>
-              {eachTrain.destination}
-              <br />
-              <button
-                type="submit"
-                onClick={() => {
-                  sendData(eachTrain);
-                }}
-              >
-                Book Train
-              </button>
-            </div>
-          );
-        })
+        <div className="book-train-main">
+          <table className="book-train-table">
+            <thead>
+              <th>SNO.</th>
+              <th>Train Number</th>
+              <th>Train Name</th>
+              <th>Source Station</th>
+              <th>Destination Station</th>
+              <th>Book</th>
+            </thead>
+          </table>
+          {trainData.map((eachTrain, index) => {
+            return (
+              <table key={eachTrain.id} className="book-train-table">
+                <tr>
+                  <td>{index + 1}</td>
+                  <td>{eachTrain.trainNumber}</td>
+                  <td>{eachTrain.trainName}</td>
+                  <td>{eachTrain.source}</td>
+                  <td>{eachTrain.destination}</td>
+                  <td>
+                    <button
+                      type="submit"
+                      onClick={() => {
+                        sendData(eachTrain);
+                      }}
+                    >
+                      Book Train
+                    </button>
+                  </td>
+                </tr>
+              </table>
+            );
+          })}
+        </div>
       )}
     </>
   );

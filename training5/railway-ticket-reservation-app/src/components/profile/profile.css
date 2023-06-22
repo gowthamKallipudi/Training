@@ -1,0 +1,19 @@
+.profile-heading {
+    margin-top: 2%;
+    text-align: center;
+}
+
+.profile-table {
+    margin: auto;
+    margin-top: 2%;
+    border-collapse: collapse;
+    width: 50%;
+}
+
+.profile-table th, td {
+    text-align: center;
+    width: 12.5%;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    background-color: rgb(0, 255, 174);
+}

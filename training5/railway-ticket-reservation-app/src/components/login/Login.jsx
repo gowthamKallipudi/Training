@@ -26,9 +26,8 @@ const Login = () => {
       },
       body: JSON.stringify(loginData),
     });
-    const data = await response.json();
-    console.log(data);
     if (response.status === 200) {
+      const data = await response.json();
       auth.dispatch({
         type: "Login",
         payload: data,

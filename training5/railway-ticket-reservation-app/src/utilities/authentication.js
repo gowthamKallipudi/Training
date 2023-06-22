@@ -18,4 +18,10 @@ const autentication = (state = initialState, action) => {
 };
 
 const auth = createStore(autentication);
+
+export const checkAuth = () => {
+  const state = auth.getState();
+  return (state.userName === "") ? false : true;
+}
+
 export { auth };
