@@ -10,6 +10,7 @@ body {
   width: fit-content;
   padding: 2%;
   border-radius: 4%;
+  text-align: end;
 }
 
 .submit-button button {

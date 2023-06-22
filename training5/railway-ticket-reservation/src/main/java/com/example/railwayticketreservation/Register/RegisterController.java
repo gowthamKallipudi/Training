@@ -35,4 +35,10 @@ public class RegisterController {
             return new ResponseEntity<>(user.get(), HttpStatus.OK);
         }
     }
+
+    @PutMapping("api/updateUser")
+    public ResponseEntity<String> updateUser(@RequestBody RegisterModel registerModel) {
+        registerRepository.save(registerModel);
+        return new ResponseEntity<>("updated successfully", HttpStatus.OK);
+    }
 }
