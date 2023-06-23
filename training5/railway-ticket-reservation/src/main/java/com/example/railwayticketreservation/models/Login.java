@@ -10,9 +10,12 @@ public class Login {
     @Column(nullable = false, updatable = false, length = 20)
     private String password;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "id", nullable = false, unique = true)
     private Register id;
+
+    public Login() {
+    }
 
     public String getPassword() {
         return password;
@@ -29,4 +32,5 @@ public class Login {
     public void setId(Register id) {
         this.id = id;
     }
+
 }

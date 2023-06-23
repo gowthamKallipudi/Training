@@ -26,11 +26,14 @@ public class Register {
     @Column(nullable = false)
     private LocalDate dob;
 
-    @OneToOne(mappedBy = "id", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "id")
     private Login idLogin;
 
     @OneToMany(mappedBy = "user")
     private Set<Bookings> bookings;
+
+    public Register() {
+    }
 
     public Integer getId() {
         return id;
@@ -86,5 +89,18 @@ public class Register {
 
     public void setBookings(Set<Bookings> bookings) {
         this.bookings = bookings;
+    }
+
+    @Override
+    public String toString() {
+        return "Register{" +
+                "id=" + id +
+                ", emailId='" + emailId + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", dob=" + dob +
+                ", idLogin=" + idLogin +
+                ", bookings=" + bookings +
+                '}';
     }
 }

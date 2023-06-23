@@ -21,7 +21,7 @@ public class Route {
     @OneToMany(mappedBy = "route")
     private Set<Bookings> bookings;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "train_id", nullable = false)
     private Train train;
 

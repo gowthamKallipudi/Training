@@ -1,10 +1,11 @@
 import { legacy_createStore as createStore } from "redux";
 
 const initialState = {
-  userName: "",
+  id: "",
   emailId: "",
-  phoneNumber: "",
-  password: "",
+  lastName: "",
+  firstName: "",
+  dob: ""
 };
 
 const autentication = (state = initialState, action) => {
@@ -21,7 +22,7 @@ const auth = createStore(autentication);
 
 export const checkAuth = () => {
   const state = auth.getState();
-  return (state.userName === "") ? false : true;
+  return (state.lastName === "") ? false : true;
 }
 
 export { auth };

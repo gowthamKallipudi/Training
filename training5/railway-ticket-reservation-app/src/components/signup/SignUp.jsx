@@ -3,10 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import "./signup.css";
 
 const initialData = {
-  userName: "",
+  lastName: "",
+  firstName: "",
   emailId: "",
-  phoneNumber: "",
   password: "",
+  dob: ""
 };
 
 const SignUp = () => {
@@ -35,12 +36,12 @@ const SignUp = () => {
     <div className="signup-container">
       <form>
         <div className="input-fields">
-          <label>User Name : </label>
+          <label>Last Name : </label>
           <input
             type="text"
-            name="userName"
-            value={signUpData.userName}
-            placeholder="Enter your user name"
+            name="lastName"
+            value={signUpData.lastName}
+            placeholder="Enter your last name"
             onChange={(e) => {
               if (prompt) setPrompt(!prompt);
               setLoginData({ ...signUpData, [e.target.name]: e.target.value });
@@ -51,6 +52,19 @@ const SignUp = () => {
               <div className="prompt">User name already exist ...</div>
             </>
           )}
+        </div>
+        <br />
+        <div className="input-fields">
+          <label>First Name : </label>
+          <input
+            type="text"
+            name="firstName"
+            value={signUpData.firstName}
+            placeholder="Enter your first name"
+            onChange={(e) => {
+              setLoginData({ ...signUpData, [e.target.name]: e.target.value });
+            }}
+          />
         </div>
         <br />
         <div className="input-fields">
@@ -67,12 +81,12 @@ const SignUp = () => {
         </div>
         <br />
         <div className="input-fields">
-          <label>Phone Number : </label>
+          <label>DOB : </label>
           <input
             type="text"
-            name="phoneNumber"
-            value={signUpData.phoneNumber}
-            placeholder="Enter your phone number"
+            name="dob"
+            value={signUpData.dob}
+            placeholder="Enter your date of birth"
             onChange={(e) => {
               setLoginData({ ...signUpData, [e.target.name]: e.target.value });
             }}

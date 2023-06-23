@@ -13,11 +13,11 @@ public class RouteDetails {
     @Column(nullable = false)
     private Integer haltInMinutes;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "route_id", nullable = false)
     private Route route;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "station_id", nullable = false)
     private Station station;
 
