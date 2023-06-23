@@ -32,7 +32,6 @@ public class BookingsController {
             booking.setCoach(booking1.getCoach());
             booking.setSeatNo(booking1.getSeatNo());
             bookings1.add(booking);
-            System.out.println(booking1);
         }
         return new ResponseEntity<>(bookings1, HttpStatus.OK);
     }
