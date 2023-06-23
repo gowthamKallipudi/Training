@@ -39,7 +39,7 @@ const BookTrain = () => {
   }, []);
 
   const state = auth.getState();
-  if (state.userName === "") {
+  if (state.lastName === "") {
     return <Navigate to="/login" />;
   }
 

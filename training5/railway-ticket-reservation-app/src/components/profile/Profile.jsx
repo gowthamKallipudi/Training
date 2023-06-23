@@ -9,27 +9,27 @@ const Profile = () => {
   const [editState, setEditState] = useState(false);
 
   useEffect(() => {
-    if (checkAuth()) fetchProfile();
+    if (checkAuth()) setProfileData(auth.getState());
   }, []);
 
   const state = auth.getState();
-  if (state.userName === "") {
+  if (state.lastName === "") {
     return <Navigate to="/login" />;
   }
 
-  const fetchProfile = async () => {
-    const response = await fetch(
-      `http://localhost:8080/api/getUser/${state.userName}`,
-      {
-        method: "GET",
-        headers: {
-          "content-type": "application/json",
-        },
-      }
-    );
-    const data = await response.json();
-    setProfileData(data);
-  };
+  // const fetchProfile = async () => {
+  //   const response = await fetch(
+  //     `http://localhost:8080/api/getUser/${state.userName}`,
+  //     {
+  //       method: "GET",
+  //       headers: {
+  //         "content-type": "application/json",
+  //       },
+  //     }
+  //   );
+  //   const data = await response.json();
+  //   setProfileData(data);
+  // };
 
   const updateProfile = async () => {
     const response = await fetch("http://localhost:8080/api/updateUser", {
@@ -40,6 +40,13 @@ const Profile = () => {
       body: JSON.stringify(profileData),
     });
     console.log(response);
+    if (response.status === 200) {
+      auth.dispatch({
+        type: "Login",
+        payload: profileData,
+      });
+      console.log(auth.getState());
+    }
   };
 
   return (
@@ -53,8 +60,38 @@ const Profile = () => {
               <th colSpan={2}>Edit Profile</th>
             </thead>
             <tr>
-              <td>User Name</td>
-              <td>{profileData.userName}</td>
+              <td>Last Name</td>
+              <td>
+                <input
+                  type="text"
+                  name="lastName"
+                  value={profileData.lastName}
+                  placeholder="Enter your Last Name"
+                  onChange={(e) => {
+                    setProfileData({
+                      ...profileData,
+                      [e.target.name]: e.target.value,
+                    });
+                  }}
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>First Name</td>
+              <td>
+                <input
+                  type="text"
+                  name="firstName"
+                  value={profileData.firstName}
+                  placeholder="Enter your First Name"
+                  onChange={(e) => {
+                    setProfileData({
+                      ...profileData,
+                      [e.target.name]: e.target.value,
+                    });
+                  }}
+                />
+              </td>
             </tr>
             <tr>
               <td>Email Id</td>
@@ -74,13 +111,13 @@ const Profile = () => {
               </td>
             </tr>
             <tr>
-              <td>Phone Number</td>
+              <td>DOB</td>
               <td>
                 <input
                   type="text"
-                  name="phoneNumber"
-                  value={profileData.phoneNumber}
-                  placeholder="Enter your Phone Number"
+                  name="dob"
+                  value={profileData.dob}
+                  placeholder="Enter your Date of Birth"
                   onChange={(e) => {
                     setProfileData({
                       ...profileData,
@@ -107,6 +144,7 @@ const Profile = () => {
                   type="button"
                   onClick={() => {
                     setEditState(!editState);
+                    setProfileData(state);
                   }}
                 >
                   Cancel
@@ -126,16 +164,20 @@ const Profile = () => {
                   <th colSpan={2}>Profile</th>
                 </thead>
                 <tr>
-                  <td>User Name </td>
-                  <td>{profileData.userName}</td>
+                  <td>Last Name </td>
+                  <td>{profileData.lastName}</td>
+                </tr>
+                <tr>
+                  <td>First Name </td>
+                  <td>{profileData.firstName}</td>
                 </tr>
                 <tr>
                   <td>Email Id </td>
                   <td>{profileData.emailId}</td>
                 </tr>
                 <tr>
-                  <td>Phone Number </td>
-                  <td>{profileData.phoneNumber}</td>
+                  <td>DOB </td>
+                  <td>{profileData.dob}</td>
                 </tr>
                 <tr>
                   <td></td>

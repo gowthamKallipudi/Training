@@ -6,7 +6,7 @@ import "./home.css";
 
 const Home = () => {
   const state = auth.getState();
-  if (state.userName === "") {
+  if (state.lastName === "") {
     return <Navigate to="/login" />;
   }
   return (
