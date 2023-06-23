@@ -17,7 +17,7 @@ const Bookings = () => {
   }
 
   const fetchBookings = async () => {
-    const response = await fetch("http://localhost:8080/api/getAllBookings", {
+    const response = await fetch(`http://localhost:8080/api/getBookings/${state.id}`, {
       method: "GET",
       headers: {
         "content-type": "application/json",
@@ -37,13 +37,12 @@ const Bookings = () => {
           <table className="bookings-table">
             <thead>
               <th>SNO.</th>
-              <th>User Name</th>
-              <th>Email ID</th>
-              <th>Phone Number</th>
-              <th>Train Number</th>
-              <th>Train Name</th>
-              <th>Source Station</th>
-              <th>Destination Station</th>
+              <th>Booking Id</th>
+              <th>User Id</th>
+              <th>Route Id</th>
+              <th>Date</th>
+              <th>Coach</th>
+              <th>Seat Number</th>
             </thead>
           </table>
           {bookingsData.map((eachBooking, index) => {
@@ -51,13 +50,12 @@ const Bookings = () => {
               <table key={eachBooking.id} className="bookings-table">
                 <tr>
                   <td>{index + 1}</td>
-                  <td>{eachBooking.userName}</td>
-                  <td>{eachBooking.emailId}</td>
-                  <td>{eachBooking.phoneNumber}</td>
-                  <td>{eachBooking.trainNumber}</td>
-                  <td>{eachBooking.trainName}</td>
-                  <td>{eachBooking.source}</td>
-                  <td>{eachBooking.destination}</td>
+                  <td>{eachBooking.bookingId}</td>
+                  <td>{eachBooking.userId}</td>
+                  <td>{eachBooking.routeId}</td>
+                  <td>{eachBooking.date}</td>
+                  <td>{eachBooking.coach}</td>
+                  <td>{eachBooking.seatNo}</td>
                 </tr>
               </table>
             );

@@ -10,7 +10,7 @@ const BookTrain = () => {
   const [bookingState, setBookingState] = useState({ state: false, data: {} });
 
   const fetchTrains = async () => {
-    const response = await fetch("http://localhost:8080/api/getAllTrains", {
+    const response = await fetch("http://localhost:8080/api/availableTrains", {
       method: "GET",
       headers: {
         "content-type": "application/json",
@@ -34,7 +34,7 @@ const BookTrain = () => {
   useEffect(() => {
     if (checkAuth) {
       fetchTrains();
-      fetchProfile();
+      // fetchProfile();
     }
   }, []);
 
@@ -45,7 +45,7 @@ const BookTrain = () => {
 
 
   const sendData = async (currentTrain) => {
-    const response = await fetch("http://localhost:8080/api/addBooking", {
+    const response = await fetch("http://localhost:8080/api/", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -100,10 +100,11 @@ const BookTrain = () => {
               <table className="book-train-table">
                 <thead>
                   <th>SNO.</th>
-                  <th>Train Number</th>
                   <th>Train Name</th>
-                  <th>Source Station</th>
-                  <th>Destination Station</th>
+                  <th>SL Available</th>
+                  <th>A3 Available</th>
+                  <th>A2 Available</th>
+                  <th>A1 Available</th>
                   <th>Book</th>
                 </thead>
               </table>
@@ -112,10 +113,11 @@ const BookTrain = () => {
                   <table key={eachTrain.id} className="book-train-table">
                     <tr>
                       <td>{index + 1}</td>
-                      <td>{eachTrain.trainNumber}</td>
                       <td>{eachTrain.trainName}</td>
-                      <td>{eachTrain.source}</td>
-                      <td>{eachTrain.destination}</td>
+                      <td>{eachTrain.slCount}</td>
+                      <td>{eachTrain.a3Count}</td>
+                      <td>{eachTrain.a2Count}</td>
+                      <td>{eachTrain.a1Count}</td>
                       <td>
                         <button
                           type="submit"

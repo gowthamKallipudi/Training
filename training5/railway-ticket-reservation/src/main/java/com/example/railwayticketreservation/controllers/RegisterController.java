@@ -40,7 +40,6 @@ public class RegisterController {
             login.setPassword(user.getPassword());
             login.setId(register1);
             loginRepository.save(login);
-            registerRepository.save(register);
             return new ResponseEntity<>("User Data Added Successfully", HttpStatus.CREATED);
         }
     }
