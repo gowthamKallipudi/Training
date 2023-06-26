@@ -2,12 +2,12 @@ package com.example.railwayticketreservation.controllers;
 
 import com.example.railwayticketreservation.models.*;
 import com.example.railwayticketreservation.repositories.*;
-import com.example.railwayticketreservation.utilModels.TrainAvailable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @RestController
@@ -22,7 +22,7 @@ public class BookTrainController {
     BookingsRepository bookingsRepository;
 
     @Autowired
-    TrainCoachRespository trainCoachRespository;
+    TrainCoachRepository trainCoachRepository;
 
     @Autowired
     StationRepository stationRepository;
@@ -34,29 +34,19 @@ public class BookTrainController {
     RouteRepository routeRepository;
 
     @GetMapping("/api/availableTrains")
-    public ResponseEntity<List<TrainAvailable>> availableTrains() {
-        List<TrainAvailable> trainsAvailable = new ArrayList<>();
-        List<Train> trains = trainRepository.findAll();
-        for(Train train : trains) {
-            TrainAvailable trainAvailable = new TrainAvailable();
-            trainAvailable.setTrainName(train.getName());
-            Map<String, Integer> map = new HashMap<>();
-            List<TrainCoach> coaches = trainCoachRespository.findAll();
-            int noSl = coaches.get(0).getNoOfSeats() - bookingsRepository.findByCoach("SL", 1);
-            int noA1 = coaches.get(1).getNoOfSeats() - bookingsRepository.findByCoach("A1", 1);
-            int noA2 = coaches.get(2).getNoOfSeats() - bookingsRepository.findByCoach("A2", 1);
-            int noA3 = coaches.get(3).getNoOfSeats() - bookingsRepository.findByCoach("A3", 1);
-            trainAvailable.setSlCount(noSl);
-            trainAvailable.setA1Count(noA1);
-            trainAvailable.setA2Count(noA2);
-            trainAvailable.setA3Count(noA3);
-            trainsAvailable.add(trainAvailable);
+    public ResponseEntity<Map<String, Integer>> availableTrains(@RequestParam(name = "name") String name, @RequestParam(name = "date") LocalDate date, @RequestParam(name = "day") Integer day) {
+        Integer trainId = trainRepository.findIdByName(name);
+        Integer routeId = routeRepository.findRouteIdByTrainIdAndStartDay(trainId, day);
+        List<TrainCoach> trainCoachList = trainCoachRepository.findAll();
+        Map<String, Integer> coaches = new HashMap<>();
+        for(TrainCoach trainCoach : trainCoachList) {
+            coaches.put(trainCoach.getCoach(), trainCoach.getNoOfSeats() - bookingsRepository.findByCoach(trainCoach.getCoach(), routeId, date));
         }
-        return new ResponseEntity<>(trainsAvailable, HttpStatus.OK);
+        return new ResponseEntity<Map<String, Integer>>(coaches, HttpStatus.OK);
     }
 
     @GetMapping("api/getTrainBetween")
-    public ResponseEntity<List<String>> getTrainBetween(@RequestParam(name = "source") String sourceStation, @RequestParam(name = "destination") String destinationStation) {
+    public ResponseEntity<Map<String, List<Integer>>> getTrainBetween(@RequestParam(name = "source") String sourceStation, @RequestParam(name = "destination") String destinationStation, @RequestParam(name = "day") Integer day) {
         Integer station1 = stationRepository.findByStation(sourceStation).getId();
         Integer station2 = stationRepository.findByStation(destinationStation).getId();
         System.out.println(station1 + " " + station2);
@@ -72,13 +62,31 @@ public class BookTrainController {
         }
         routeIds1.retainAll(routeIds2);
         List<String> trainNames = new ArrayList<>();
+        HashSet<Integer> trainIds = new HashSet<>();
         for(Integer routeId : routeIds1) {
             Route route = routeRepository.findTrainsByRoute(routeId);
+            trainIds.add(route.getTrain().getId());
             trainNames.add(route.getTrain().getName());
         }
-        for(String names : trainNames) {
+        System.out.println(trainIds);
+        Map<String, List<Integer>> data = new HashMap<>();
+        for(Integer train : trainIds) {
+            List<Integer> days = routeRepository.findStartDayByTrainId(train);
+            if(days.contains(day))
+                data.put(trainRepository.findNameById(train), days);
+            System.out.println(routeRepository.findStartDayByTrainId(train));
+        }
+        System.out.println(data);
+        HashSet<String> trains = new HashSet<>(trainNames);
+        for(String names : trains) {
             System.out.println(names);
         }
-        return new ResponseEntity<>(trainNames, HttpStatus.OK);
+        return new ResponseEntity<>(data, HttpStatus.OK);
+    }
+
+    @GetMapping("api/getAvailableDays")
+    public ResponseEntity<List<Integer>> getAvailableDays(@RequestParam(name = "trainName") String name) {
+        Integer trainId = trainRepository.findIdByName(name);
+        return new ResponseEntity<>(routeRepository.findStartDayByTrainId(trainId), HttpStatus.OK);
     }
 }

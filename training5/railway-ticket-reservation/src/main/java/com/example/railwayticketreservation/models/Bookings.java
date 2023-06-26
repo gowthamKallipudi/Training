@@ -1,13 +1,11 @@
 package com.example.railwayticketreservation.models;
 
 import jakarta.persistence.*;
-import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
 
 @Entity(name = "t_booking")
 @Table(name = "t_booking")
-//@NamedQuery(name="Bookings.findAllByUserId", query = "select tb from t_booking tb where tb.user_id=?1")
 public class Bookings {
     @Id
     @Column(nullable = false, updatable = false)

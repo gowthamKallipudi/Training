@@ -3,9 +3,8 @@ import Login from "./components/login/Login";
 import SignUp from "./components/signup/SignUp";
 import Home from "./components/dashboard/Home";
 import Bookings from "./components/bookings/Bookings";
-import BookTrain from "./components/book-train/BookTrain";
 import Profile from "./components/profile/Profile";
-import BookTrains from "./components/book-train/BookTrains";
+import BookTrain from "./components/book-train/BookTrain";
 
 function App() {
   return (
@@ -19,7 +18,6 @@ function App() {
           <Route path="/bookings" element={<Bookings />} />
           <Route path="/book-train" element={<BookTrain />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/book" element={<BookTrains />} />
         </Routes>
       </BrowserRouter>
     </div>

@@ -1,6 +1,5 @@
 package com.example.railwayticketreservation.controllers;
 
-
 import com.example.railwayticketreservation.models.Login;
 import com.example.railwayticketreservation.models.Register;
 import com.example.railwayticketreservation.repositories.LoginRepository;
