@@ -32,6 +32,7 @@ public class LoginController {
                 profile.setLastName(user.get().getLastName());
                 profile.setFirstName(user.get().getFirstName());
                 profile.setDob(user.get().getDob());
+                profile.setLatestPage(user.get().getLatestPage());
                 return new ResponseEntity<>(profile, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>("User Not Authenticated", HttpStatus.UNAUTHORIZED);

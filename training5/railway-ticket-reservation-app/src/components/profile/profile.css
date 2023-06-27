@@ -32,3 +32,9 @@ td {
   padding: 13px 28px;
   border: 2px solid rgb(255, 255, 255);
 }
+
+.profile-table input[type=text] {
+  border:2px solid rgb(112, 70, 217);
+  border-radius: 5px;
+  padding: 7px;
+}

@@ -8,6 +8,7 @@ public class Profile {
     private String lastName;
     private String firstName;
     private LocalDate dob;
+    private String latestPage;
 
     public Profile() {
     }
@@ -50,5 +51,13 @@ public class Profile {
 
     public void setDob(LocalDate dob) {
         this.dob = dob;
+    }
+
+    public String getLatestPage() {
+        return latestPage;
+    }
+
+    public void setLatestPage(String latestPage) {
+        this.latestPage = latestPage;
     }
 }

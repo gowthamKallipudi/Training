@@ -12,6 +12,6 @@ public interface BookingsRepository extends JpaRepository<Bookings, Integer> {
     @Query(value = "SELECT * FROM t_booking WHERE user_id = ?1", nativeQuery = true)
     List<Bookings> findAllByUserId(Integer user);
 
-    @Query(value = "SELECT COUNT(*) FROM t_booking WHERE coach = ?1 AND route_id = ?2 AND date = ?3", nativeQuery = true)
+    @Query(value = "SELECT COUNT(*) FROM t_booking WHERE coach LIKE ?1% AND route_id = ?2 AND date = ?3", nativeQuery = true)
     Integer findByCoach(String coach, Integer routeId, LocalDate date);
 }

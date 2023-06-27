@@ -4,6 +4,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import { auth } from "../../utilities/authentication";
 import { Navigate } from "react-router";
 import NavBar from "../navbar/NavBar";
+import "./booktrain.css";
+import { useNavigate } from "react-router-dom";
 
 const initialData = {
   source: "",
@@ -26,7 +28,8 @@ const BookTrain = () => {
   const [seats, setSeats] = useState(null);
   const [date, setDate] = useState(new Date());
   const [booking, setBooking] = useState(bookingInitialData);
-  const [openState, setOpenState] = useState(false);
+  const [bookingState, setBookingState] = useState(false);
+  const navigate = useNavigate();
 
   const state = auth.getState();
   if (state.lastName === "") {
@@ -46,7 +49,7 @@ const BookTrain = () => {
       }
     );
     const data = await response.json();
-    setAvailableTrains(data);
+    if (response.status === 200) setAvailableTrains(data);
     console.log(data);
   };
 
@@ -60,7 +63,6 @@ const BookTrain = () => {
         headers: {
           "content-type": "application/json",
         },
-        // body: JSON.stringify({...param, name: trainName}),
       }
     );
     const data = await response.json();
@@ -83,122 +85,185 @@ const BookTrain = () => {
   return (
     <>
       <NavBar />
-      <DatePicker
-        selected={date}
-        name="date"
-        onChange={(currentDate) => {
-          setDate(currentDate);
-        }}
-      />
-      <br />
-      <input
-        type="text"
-        name="source"
-        value={station.source}
-        placeholder="Enter your source station"
-        onChange={(e) => {
-          setStation({ ...station, [e.target.name]: e.target.value });
-          setBooking({ ...booking, [e.target.name]: e.target.value });
-        }}
-      />
-      <br />
-      <input
-        type="text"
-        name="destination"
-        value={station.destination}
-        placeholder="Enter your destination station"
-        onChange={(e) => {
-          setStation({ ...station, [e.target.name]: e.target.value });
-          setBooking({ ...booking, [e.target.name]: e.target.value });
-        }}
-      />
-      <button
-        type="submit"
-        onClick={() => {
-          fetchAvailableTrains();
-          setBooking({
-            ...booking,
-            date: date.toISOString().slice(0, 10),
-            day: date.getDay(),
-          });
-        }}
-      >
-        Submit
-      </button>
-      <div>
-        {availableTrains == null ? (
-          <div>No Data Found</div>
-        ) : (
+      <div className="book-train">
+        <div className="book-train-input-container">
           <div>
-            {Object.keys(availableTrains).map((eachKey, index) => {
-              return (
-                <div key={index}>
-                  {eachKey}
-                  {availableTrains[eachKey].map((eachDay) => {
-                    return <div>{eachDay}</div>;
-                  })}
-                  <button
-                    type="submit"
-                    onClick={() => {
-                      fetchSeats(eachKey);
-                    }}
-                  >
-                    Check Availability
-                  </button>
-                  <button
-                    type="submit"
-                    onClick={() => {
-                      const user = auth.getState();
-                      setBooking({
-                        ...booking,
-                        trainName: eachKey,
-                        userId: user.id,
-                      });
-                      setOpenState(true);
-                    }}
-                  >
-                    Book Train
-                  </button>
-                </div>
-              );
-            })}
+            <label>Date of Journey : </label>
+            <DatePicker
+              selected={date}
+              name="date"
+              onChange={(currentDate) => {
+                setDate(currentDate);
+                setAvailableTrains(null);
+                setSeats(null);
+              }}
+            />
           </div>
+          <div>
+            <label>Source Station : </label>
+            <input
+              type="text"
+              name="source"
+              value={station.source}
+              placeholder="Enter your source station"
+              onChange={(e) => {
+                setStation({ ...station, [e.target.name]: e.target.value });
+                setBooking({ ...booking, [e.target.name]: e.target.value });
+                setAvailableTrains(null);
+                setSeats(null);
+              }}
+            />
+          </div>
+          <div>
+            <label>Destination Station : </label>
+            <input
+              type="text"
+              name="destination"
+              value={station.destination}
+              placeholder="Enter your destination station"
+              onChange={(e) => {
+                setStation({ ...station, [e.target.name]: e.target.value });
+                setBooking({ ...booking, [e.target.name]: e.target.value });
+                setAvailableTrains(null);
+                setSeats(null);
+              }}
+            />
+          </div>
+          <div>
+            <button
+              type="submit"
+              onClick={() => {
+                fetchAvailableTrains();
+                setBooking({
+                  ...booking,
+                  date: date.toISOString().slice(0, 10),
+                  day: date.getDay(),
+                });
+              }}
+            >
+              Search Trains
+            </button>
+          </div>
+        </div>
+        {bookingState ? (
+          <div className="booking-popup">
+            Confirm Adding Train Ticket ...
+            <br />
+            <br />
+            <button
+              type="button"
+              onClick={() => {
+                addBooking();
+                setBookingState(false);
+                navigate("/bookings");
+              }}
+            >
+              Confirm Booking
+            </button>
+            <br />
+            <br />
+            <button
+              type="button"
+              onClick={() => {
+                setBookingState(false);
+              }}
+            >
+              Cancel
+            </button>
+          </div>
+        ) : (
+          availableTrains != null && (
+            <div className="book-train-sub-container">
+              <div className="train-display-container child-cont">
+                <table className="book-train-table">
+                  <thead>
+                    <th>Train Name</th>
+                    <th>Weekly Status</th>
+                    <th>Availability</th>
+                  </thead>
+                  <tbody>
+                    {Object.keys(availableTrains).map((eachKey, index) => {
+                      return (
+                        <tr key={index}>
+                          <td>{eachKey}</td>
+                          <td>
+                            {availableTrains[eachKey].map((eachDay) => {
+                              return <div>{eachDay}</div>;
+                            })}
+                          </td>
+                          <td>
+                            <button
+                              type="submit"
+                              onClick={() => {
+                                fetchSeats(eachKey);
+                                setBooking({
+                                  ...booking,
+                                  trainName: eachKey,
+                                  userId: state.id,
+                                });
+                              }}
+                            >
+                              Check Availability
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+              {seats !== null && (
+                <div className="availability-container child-cont">
+                  <table className="availability-table">
+                    <thead>
+                      <th>Coach</th>
+                      <th>Available</th>
+                    </thead>
+                    <tbody>
+                      {Object.keys(seats).map((each, index) => {
+                        return (
+                          <tr key={index}>
+                            <td>{each}</td>
+                            <td>{seats[each]}</td>
+                          </tr>
+                        );
+                      })}
+                      <tr>
+                        <td colSpan={2}>
+                          <input
+                            type="text"
+                            name="coach"
+                            value={booking.coach}
+                            placeholder="Enter your Coach"
+                            onChange={(e) => {
+                              setBooking({
+                                ...booking,
+                                [e.target.name]: e.target.value,
+                              });
+                            }}
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colSpan={2}>
+                          <button
+                            type="submit"
+                            onClick={() => {
+                              setBookingState(true);
+                            }}
+                          >
+                            Add Ticket
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          )
         )}
       </div>
-      <br />
-      {seats !== null && (
-        <div>
-          {Object.keys(seats).map((each) => {
-            return (
-              <div>
-                {each} : {seats[each]}
-              </div>
-            );
-          })}
-        </div>
-      )}
-      {openState && <>
-      <div>
-        <input
-          type="text"
-          name="coach"
-          value={booking.coach}
-          placeholder="Enter your Coach"
-          onChange={(e) => {
-            setBooking({ ...booking, [e.target.name]: e.target.value });
-          }}
-        />
-      </div>
-      <button
-        type="submit"
-        onClick={() => {
-          addBooking();
-        }}
-      >
-        Add Ticket
-      </button>
-      </>
-      }
     </>
   );
 };

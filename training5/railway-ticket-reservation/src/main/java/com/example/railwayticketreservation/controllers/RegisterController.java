@@ -28,12 +28,13 @@ public class RegisterController {
         Optional<Register> user1 = registerRepository.findByLastName(user.getLastName());
         if (user1.isPresent()) {
             return new ResponseEntity<>("User Data Failed To Add", HttpStatus.BAD_REQUEST);
-        } else {
+        }else {
             Register register = new Register();
             register.setEmailId(user.getEmailId());
             register.setLastName(user.getLastName());
             register.setFirstName(user.getFirstName());
             register.setDob(user.getDob());
+            register.setLatestPage("dashboard");
             Register register1 = registerRepository.save(register);
             Login login = new Login();
             login.setPassword(user.getPassword());

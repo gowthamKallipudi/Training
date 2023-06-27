@@ -15,11 +15,19 @@ public class Bookings {
     @Column(nullable = false)
     private LocalDate date;
 
-    @Column(nullable = false, length = 2)
+    @Column(nullable = false, length = 3)
     private String coach;
 
     @Column(nullable = false)
     private Integer seatNo;
+
+    @ManyToOne
+    @JoinColumn(name = "source", nullable = false)
+    private Station stationS;
+
+    @ManyToOne
+    @JoinColumn(name = "destination", nullable = false)
+    private Station stationD;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -75,5 +83,21 @@ public class Bookings {
 
     public void setRoute(Route route) {
         this.route = route;
+    }
+
+    public Station getStationS() {
+        return stationS;
+    }
+
+    public void setStationS(Station stationS) {
+        this.stationS = stationS;
+    }
+
+    public Station getStationD() {
+        return stationD;
+    }
+
+    public void setStationD(Station stationD) {
+        this.stationD = stationD;
     }
 }

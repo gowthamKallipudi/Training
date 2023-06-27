@@ -21,11 +21,13 @@ public class ProfileController {
     @PutMapping("/api/updateUser")
     public ResponseEntity<String> updateUser(@RequestBody Profile profile) {
         Optional<Register> register = registerRepository.findById(profile.getId());
-        if(register.isPresent()) {
+        Optional<Register> newRegister = registerRepository.findByLastName(profile.getLastName());
+        if(newRegister.isEmpty() && register.isPresent()) {
             register.get().setLastName(profile.getLastName());
             register.get().setFirstName(profile.getFirstName());
             register.get().setEmailId(profile.getEmailId());
             register.get().setDob(profile.getDob());
+            register.get().setLatestPage(profile.getLatestPage());
             registerRepository.save(register.get());
             return new ResponseEntity<>("User Updated", HttpStatus.OK);
         } else {

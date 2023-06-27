@@ -39,8 +39,23 @@ public class BookTrainController {
         Integer routeId = routeRepository.findRouteIdByTrainIdAndStartDay(trainId, day);
         List<TrainCoach> trainCoachList = trainCoachRepository.findAll();
         Map<String, Integer> coaches = new HashMap<>();
+        Integer count = null;
         for(TrainCoach trainCoach : trainCoachList) {
-            coaches.put(trainCoach.getCoach(), trainCoach.getNoOfSeats() - bookingsRepository.findByCoach(trainCoach.getCoach(), routeId, date));
+            switch(trainCoach.getCoach()) {
+                case "SL":
+                    count = trainRepository.findById(trainId).get().getNoSl();
+                    break;
+                case "A3":
+                    count = trainRepository.findById(trainId).get().getNo3rdAc();
+                    break;
+                case "A2":
+                    count = trainRepository.findById(trainId).get().getNo2ndAc();
+                    break;
+                case "A1":
+                    count = trainRepository.findById(trainId).get().getNo1stAc();
+                    break;
+            }
+            coaches.put(trainCoach.getCoach(), trainCoach.getNoOfSeats() * count - bookingsRepository.findByCoach(trainCoach.getCoach(), routeId, date));
         }
         return new ResponseEntity<Map<String, Integer>>(coaches, HttpStatus.OK);
     }

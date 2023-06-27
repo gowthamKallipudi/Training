@@ -10,26 +10,12 @@ const Profile = () => {
 
   useEffect(() => {
     if (checkAuth()) setProfileData(auth.getState());
-  }, []);
+  }, [editState]);
 
   const state = auth.getState();
   if (state.lastName === "") {
     return <Navigate to="/login" />;
   }
-
-  // const fetchProfile = async () => {
-  //   const response = await fetch(
-  //     `http://localhost:8080/api/getUser/${state.userName}`,
-  //     {
-  //       method: "GET",
-  //       headers: {
-  //         "content-type": "application/json",
-  //       },
-  //     }
-  //   );
-  //   const data = await response.json();
-  //   setProfileData(data);
-  // };
 
   const updateProfile = async () => {
     const response = await fetch("http://localhost:8080/api/updateUser", {

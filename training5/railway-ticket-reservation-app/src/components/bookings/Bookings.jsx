@@ -17,12 +17,15 @@ const Bookings = () => {
   }
 
   const fetchBookings = async () => {
-    const response = await fetch(`http://localhost:8080/api/getBookings/${state.id}`, {
-      method: "GET",
-      headers: {
-        "content-type": "application/json",
-      },
-    });
+    const response = await fetch(
+      `http://localhost:8080/api/getBookings/${state.id}`,
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+        },
+      }
+    );
     const data = await response.json();
     setBookingsData(data);
   };
@@ -36,30 +39,32 @@ const Bookings = () => {
         <div className="bookings-main">
           <table className="bookings-table">
             <thead>
-              <th>SNO.</th>
               <th>Booking Id</th>
-              <th>User Id</th>
-              <th>Route Id</th>
+              <th>User Name</th>
+              <th>Train Name</th>
               <th>Date</th>
               <th>Coach</th>
               <th>Seat Number</th>
+              <th>Source</th>
+              <th>Destination</th>
             </thead>
+            <tbody>
+              {bookingsData.map((eachBooking, index) => {
+                return (
+                  <tr key={eachBooking.id}>
+                    <td>{eachBooking.bookingId}</td>
+                    <td>{eachBooking.userName}</td>
+                    <td>{eachBooking.trainName}</td>
+                    <td>{eachBooking.date}</td>
+                    <td>{eachBooking.coach}</td>
+                    <td>{eachBooking.seatNo}</td>
+                    <td>{eachBooking.source}</td>
+                    <td>{eachBooking.destination}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
           </table>
-          {bookingsData.map((eachBooking, index) => {
-            return (
-              <table key={eachBooking.id} className="bookings-table">
-                <tr>
-                  <td>{index + 1}</td>
-                  <td>{eachBooking.bookingId}</td>
-                  <td>{eachBooking.userId}</td>
-                  <td>{eachBooking.routeId}</td>
-                  <td>{eachBooking.date}</td>
-                  <td>{eachBooking.coach}</td>
-                  <td>{eachBooking.seatNo}</td>
-                </tr>
-              </table>
-            );
-          })}
         </div>
       )}
     </>

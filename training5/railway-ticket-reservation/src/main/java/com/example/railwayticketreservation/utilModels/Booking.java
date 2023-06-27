@@ -4,11 +4,13 @@ import java.time.LocalDate;
 
 public class Booking {
     private Integer bookingId;
-    private Integer userId;
-    private Integer routeId;
+    private String userName;
+    private String trainName;
     private LocalDate date;
     private String coach;
     private Integer seatNo;
+    private String source;
+    private String destination;
 
     public Booking() {
     }
@@ -21,20 +23,20 @@ public class Booking {
         this.bookingId = bookingId;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public Integer getRouteId() {
-        return routeId;
+    public String getTrainName() {
+        return trainName;
     }
 
-    public void setRouteId(Integer routeId) {
-        this.routeId = routeId;
+    public void setTrainName(String trainName) {
+        this.trainName = trainName;
     }
 
     public LocalDate getDate() {
@@ -59,5 +61,21 @@ public class Booking {
 
     public void setSeatNo(Integer seatNo) {
         this.seatNo = seatNo;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public String getDestination() {
+        return destination;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
     }
 }

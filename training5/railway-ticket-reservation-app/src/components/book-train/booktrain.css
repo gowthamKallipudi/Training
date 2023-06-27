@@ -6,7 +6,9 @@
 
 .book-train-table {
   border-collapse: collapse;
-  width: 100%;
+  margin: 1%;
+  border-radius: 5px;
+  margin-left: 2%;
 }
 
 .book-train-table th, td {
@@ -20,7 +22,7 @@
 .book-train button {
   background-color: #4caf50;
   border: none;
-  color: aliceblue;
+  color: rgba(0, 0, 0, 0.714);
   padding: 15px 30px;
   border-radius: 5%;
 }
@@ -39,4 +41,55 @@
   background-color: rgba(150, 67, 228, 0.874);
   padding: 2%;
   border-radius: 4%; 
+}
+
+.book-train-input-container {
+  width: auto;
+  height:auto;
+  background-color: rgb(242, 209, 102);
+  padding: 1.5%;
+  margin:1.5%;
+  margin-left: 3%;
+  margin-right: 3%;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  color: black;
+}
+
+.book-train input[type=text] {
+  border:2px solid rgb(112, 70, 217);
+  border-radius: 5px;
+  padding: 7px;
+}
+
+
+.train-display-container {
+  float: left;
+  width: 70%;
+}
+
+.availability-container {
+  float: right;
+  width: 30%;
+}
+
+.availability-table {
+  border-collapse: collapse;
+  border-radius: 5px;
+  margin: 2%;
+}
+
+.availability-table th, td {
+  text-align: center;
+  width: 12.5%;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  background-color: rgb(0, 255, 174);
+}
+
+.no-data {
+  text-align: center;
+  font-weight: bolder;
 }

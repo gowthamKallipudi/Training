@@ -26,6 +26,9 @@ public class Register {
     @Column(nullable = false)
     private LocalDate dob;
 
+    @Column(nullable = false)
+    private String latestPage;
+
     @OneToOne(mappedBy = "id")
     private Login idLogin;
 
@@ -89,6 +92,14 @@ public class Register {
 
     public void setBookings(Set<Bookings> bookings) {
         this.bookings = bookings;
+    }
+
+    public String getLatestPage() {
+        return latestPage;
+    }
+
+    public void setLatestPage(String latestPage) {
+        this.latestPage = latestPage;
     }
 
     @Override
