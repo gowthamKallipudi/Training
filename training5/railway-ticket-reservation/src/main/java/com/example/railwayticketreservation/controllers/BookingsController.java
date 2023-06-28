@@ -58,7 +58,7 @@ public class BookingsController {
     }
 
     @PostMapping("/api/addBooking")
-    public ResponseEntity<String> addBooking(@RequestBody BookingDetails bookingDetails) {
+    public ResponseEntity<?> addBooking(@RequestBody BookingDetails bookingDetails) {
         Bookings bookings = new Bookings();
         bookings.setDate(bookingDetails.getDate());
         Integer trainId = trainRepository.findIdByName(bookingDetails.getTrainName());

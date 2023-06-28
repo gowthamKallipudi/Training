@@ -7,6 +7,10 @@ import jakarta.persistence.*;
 public class Login {
 
     @Id
+    @Column(nullable = false, updatable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer sno;
+
     @Column(nullable = false, updatable = false, length = 20)
     private String password;
 

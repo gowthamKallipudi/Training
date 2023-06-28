@@ -6,6 +6,8 @@ import { Navigate } from "react-router";
 import NavBar from "../navbar/NavBar";
 import "./booktrain.css";
 import { useNavigate } from "react-router-dom";
+import Dropdown from "react-dropdown";
+import "react-dropdown/style.css";
 
 const initialData = {
   source: "",
@@ -30,6 +32,8 @@ const BookTrain = () => {
   const [booking, setBooking] = useState(bookingInitialData);
   const [bookingState, setBookingState] = useState(false);
   const navigate = useNavigate();
+  const [seatTypes, setSeatTypes] = useState([]);
+  const [prompt, setPrompt] = useState({ state: "" });
 
   const state = auth.getState();
   if (state.lastName === "") {
@@ -67,7 +71,7 @@ const BookTrain = () => {
     );
     const data = await response.json();
     setSeats(data);
-    console.log(data);
+    setSeatTypes(Object.keys(data));
   };
 
   const addBooking = async () => {
@@ -78,9 +82,15 @@ const BookTrain = () => {
       },
       body: JSON.stringify(booking),
     });
-    const data = await response.json();
-    console.log(data);
-    navigate("/bookings");
+    if(response.status === 201) {
+      setPrompt({state : "success"});
+      setAvailableTrains(null);
+      setStation(initialData);
+    } else {
+      setPrompt({state : "failure"});
+      setAvailableTrains(null);
+      setStation(initialData);
+    }
   };
 
   return (
@@ -97,6 +107,7 @@ const BookTrain = () => {
                 setDate(currentDate);
                 setAvailableTrains(null);
                 setSeats(null);
+                setPrompt({state : ""});
               }}
             />
           </div>
@@ -112,6 +123,7 @@ const BookTrain = () => {
                 setBooking({ ...booking, [e.target.name]: e.target.value });
                 setAvailableTrains(null);
                 setSeats(null);
+                setPrompt({state : ""});
               }}
             />
           </div>
@@ -127,6 +139,7 @@ const BookTrain = () => {
                 setBooking({ ...booking, [e.target.name]: e.target.value });
                 setAvailableTrains(null);
                 setSeats(null);
+                setPrompt({state : ""});
               }}
             />
           </div>
@@ -146,6 +159,11 @@ const BookTrain = () => {
             </button>
           </div>
         </div>
+        {prompt.state !== "" && (prompt.state === "success" ? (
+          <div className="prompt">Ticket booked successfully ...</div>
+        ) : (
+          <div className="prompt">Ticket booking not successful ...</div>
+        ))}
         {bookingState ? (
           <div className="booking-popup">
             Confirm Adding Train Ticket ...
@@ -156,6 +174,7 @@ const BookTrain = () => {
               onClick={() => {
                 addBooking();
                 setBookingState(false);
+                setAvailableTrains(null);
               }}
             >
               Confirm Booking
@@ -166,6 +185,7 @@ const BookTrain = () => {
               type="button"
               onClick={() => {
                 setBookingState(false);
+                setAvailableTrains(null);
               }}
             >
               Cancel
@@ -234,15 +254,17 @@ const BookTrain = () => {
                       })}
                       <tr>
                         <td colSpan={2}>
-                          <input
-                            type="text"
+                          <Dropdown
+                            menuClassName="drop-down-menu"
+                            className="drop-down"
                             name="coach"
+                            options={seatTypes}
                             value={booking.coach}
-                            placeholder="Enter your Coach"
+                            placeholder="Select your coach"
                             onChange={(e) => {
                               setBooking({
                                 ...booking,
-                                [e.target.name]: e.target.value,
+                                coach: e.value,
                               });
                             }}
                           />
