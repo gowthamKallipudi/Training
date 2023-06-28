@@ -87,9 +87,6 @@ public class BookingsController {
                 count = trainRepository.findById(trainId).get().getNo1stAc();
                 break;
         }
-        System.out.println(count);
-        System.out.println(total);
-        System.out.println(booked);
         int currentBookingNo = booked + 1;
         int helper = (total / 6);
         int a = 0, b = 0;

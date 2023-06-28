@@ -23,8 +23,6 @@ public class LoginController {
     public ResponseEntity<?> checkUser(@RequestBody LoginCheck loginCheck){
         Optional<Register> user = registerRepository.findByLastName(loginCheck.getUserName());
         if(user.isPresent()) {
-            System.out.println(user.get());
-            System.out.println(user.get().getIdLogin().getPassword());
             if((user.get().getIdLogin().getPassword()).compareTo(loginCheck.getPassword()) == 0) {
                 Profile profile = new Profile();
                 profile.setId(user.get().getId());
@@ -38,7 +36,6 @@ public class LoginController {
                 return new ResponseEntity<>("User Not Authenticated", HttpStatus.UNAUTHORIZED);
             }
         }else {
-            System.out.println("not found");
             return new ResponseEntity<>("Bad Credentials", HttpStatus.BAD_REQUEST);
         }
     }

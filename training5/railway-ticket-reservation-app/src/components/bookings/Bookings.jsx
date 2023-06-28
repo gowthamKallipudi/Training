@@ -39,17 +39,19 @@ const Bookings = () => {
         <div className="bookings-main">
           <table className="bookings-table">
             <thead>
-              <th>Booking Id</th>
-              <th>User Name</th>
-              <th>Train Name</th>
-              <th>Date</th>
-              <th>Coach</th>
-              <th>Seat Number</th>
-              <th>Source</th>
-              <th>Destination</th>
+              <tr>
+                <th>Booking Id</th>
+                <th>User Name</th>
+                <th>Train Name</th>
+                <th>Date</th>
+                <th>Coach</th>
+                <th>Seat Number</th>
+                <th>Source</th>
+                <th>Destination</th>
+              </tr>
             </thead>
             <tbody>
-              {bookingsData.map((eachBooking, index) => {
+              {bookingsData.map((eachBooking) => {
                 return (
                   <tr key={eachBooking.id}>
                     <td>{eachBooking.bookingId}</td>

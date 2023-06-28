@@ -101,17 +101,4 @@ public class Register {
     public void setLatestPage(String latestPage) {
         this.latestPage = latestPage;
     }
-
-    @Override
-    public String toString() {
-        return "Register{" +
-                "id=" + id +
-                ", emailId='" + emailId + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", dob=" + dob +
-                ", idLogin=" + idLogin +
-                ", bookings=" + bookings +
-                '}';
-    }
 }

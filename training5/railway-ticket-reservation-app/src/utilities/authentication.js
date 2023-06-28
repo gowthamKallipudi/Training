@@ -5,7 +5,8 @@ const initialState = {
   emailId: "",
   lastName: "",
   firstName: "",
-  dob: ""
+  dob: "",
+  latestPage: ""
 };
 
 const autentication = (state = initialState, action) => {

@@ -38,3 +38,8 @@ td {
   border-radius: 5px;
   padding: 7px;
 }
+
+.prompt {
+  text-align: center;
+  color: red;
+}

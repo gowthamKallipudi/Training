@@ -33,7 +33,12 @@ const Login = () => {
         payload: data,
       });
       console.log(auth.getState());
-      navigate("/dashboard");
+      if(auth.getState().latestPage === ""){
+        navigate("/dashboard");
+      }
+      else {
+        navigate("/" + auth.getState().latestPage);
+      }
     } else {
       setPrompt(true);
     }

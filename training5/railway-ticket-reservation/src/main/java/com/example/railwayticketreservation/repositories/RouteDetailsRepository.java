@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface RouteDetailsRepository extends JpaRepository<RouteDetails, Integer> {
 
-    @Query(value = "SELECT * FROM m_route_details WHERE station_id = ?1", nativeQuery = true)
-    List<RouteDetails> findAllRoutesWithStationId(Integer stationId);
+    @Query(value = "SELECT route_id FROM m_route_details WHERE station_id = ?1", nativeQuery = true)
+    List<Integer> findAllRoutesWithStationId(Integer stationId);
 }

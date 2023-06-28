@@ -22,7 +22,7 @@ public class ProfileController {
     public ResponseEntity<String> updateUser(@RequestBody Profile profile) {
         Optional<Register> register = registerRepository.findById(profile.getId());
         Optional<Register> newRegister = registerRepository.findByLastName(profile.getLastName());
-        if(newRegister.isEmpty() && register.isPresent()) {
+        if((newRegister.isEmpty() || newRegister.get().getLastName().compareTo(register.get().getLastName()) == 0) && register.isPresent()) {
             register.get().setLastName(profile.getLastName());
             register.get().setFirstName(profile.getFirstName());
             register.get().setEmailId(profile.getEmailId());

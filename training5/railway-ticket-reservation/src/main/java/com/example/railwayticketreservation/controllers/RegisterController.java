@@ -34,7 +34,7 @@ public class RegisterController {
             register.setLastName(user.getLastName());
             register.setFirstName(user.getFirstName());
             register.setDob(user.getDob());
-            register.setLatestPage("dashboard");
+            register.setLatestPage("");
             Register register1 = registerRepository.save(register);
             Login login = new Login();
             login.setPassword(user.getPassword());

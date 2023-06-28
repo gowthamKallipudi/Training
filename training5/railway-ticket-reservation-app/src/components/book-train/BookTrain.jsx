@@ -80,6 +80,7 @@ const BookTrain = () => {
     });
     const data = await response.json();
     console.log(data);
+    navigate("/bookings");
   };
 
   return (
@@ -155,7 +156,6 @@ const BookTrain = () => {
               onClick={() => {
                 addBooking();
                 setBookingState(false);
-                navigate("/bookings");
               }}
             >
               Confirm Booking
@@ -177,9 +177,11 @@ const BookTrain = () => {
               <div className="train-display-container child-cont">
                 <table className="book-train-table">
                   <thead>
-                    <th>Train Name</th>
-                    <th>Weekly Status</th>
-                    <th>Availability</th>
+                    <tr>
+                      <th>Train Name</th>
+                      <th>Weekly Status</th>
+                      <th>Availability</th>
+                    </tr>
                   </thead>
                   <tbody>
                     {Object.keys(availableTrains).map((eachKey, index) => {
@@ -216,8 +218,10 @@ const BookTrain = () => {
                 <div className="availability-container child-cont">
                   <table className="availability-table">
                     <thead>
-                      <th>Coach</th>
-                      <th>Available</th>
+                      <tr>
+                        <th>Coach</th>
+                        <th>Available</th>
+                      </tr>
                     </thead>
                     <tbody>
                       {Object.keys(seats).map((each, index) => {
@@ -249,6 +253,7 @@ const BookTrain = () => {
                           <button
                             type="submit"
                             onClick={() => {
+                              setSeats(null);
                               setBookingState(true);
                             }}
                           >
