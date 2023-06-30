@@ -110,3 +110,25 @@
   display: flex;
   justify-content: space-evenly;
 }
+
+.scroll-hide {
+  width: 195px;
+  height: 400px;
+  overflow: hidden;
+}
+
+.source-station-division {
+  height: 100%;
+  margin-right: -50px;
+  padding-right: 50px;
+  overflow-y: scroll;
+}
+
+.book-train-full-page {
+  height: 100vh;
+  width: 100vw;
+}
+
+.drop-down-station {
+  border-collapse: collapse;
+}

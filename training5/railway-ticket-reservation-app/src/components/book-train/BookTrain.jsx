@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { auth, checkAuth } from "../../utilities/authentication";
 import { Navigate } from "react-router";
 import NavBar from "../navbar/NavBar";
 import "./booktrain.css";
-import { useNavigate } from "react-router-dom";
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
 
@@ -31,10 +30,14 @@ const BookTrain = () => {
   const [date, setDate] = useState(new Date());
   const [booking, setBooking] = useState(bookingInitialData);
   const [bookingState, setBookingState] = useState(false);
-  const navigate = useNavigate();
   const [seatTypes, setSeatTypes] = useState([]);
   const [prompt, setPrompt] = useState({ state: "" });
-  const [allstations, setAllStations] = useState(null);
+  const [allStations, setAllStations] = useState(null);
+  const [allStationsSource, setAllStationsSource] = useState(null);
+  const [allStationsDestination, setAllStationsDestination] = useState(null);
+  const myRef1 = useRef();
+  const myRef2 = useRef();
+
   useEffect(() => {
     if (checkAuth()) fetchStations();
   }, []);
@@ -109,7 +112,73 @@ const BookTrain = () => {
   };
 
   return (
-    <>
+    <div
+      className="book-train-full-page"
+      onClick={() => {
+        setAllStationsSource(null);
+        setAllStationsDestination(null);
+      }}
+    >
+      {allStationsSource && (
+        <div
+          className="scroll-hide"
+          style={{
+            position: "absolute",
+            left: myRef1.current.offsetLeft,
+            top: myRef1.current.offsetTop + 35,
+          }}
+        >
+          <div className="source-station-division">
+            <table className="drop-down-station">
+              {allStationsSource.map((each) => {
+                return (
+                  <tr>
+                    <td
+                      style={{ cursor: "pointer" }}
+                      onClick={() => {
+                        setStation({ ...station, source: each });
+                        setBooking({ ...booking, source: each });
+                      }}
+                    >
+                      {each}
+                    </td>
+                  </tr>
+                );
+              })}
+            </table>
+          </div>
+        </div>
+      )}
+      {allStationsDestination && (
+        <div
+          className="scroll-hide"
+          style={{
+            position: "absolute",
+            left: myRef2.current.offsetLeft,
+            top: myRef2.current.offsetTop + 35,
+          }}
+        >
+          <div className="source-station-division">
+            <table className="drop-down-station">
+              {allStationsDestination.map((each) => {
+                return (
+                  <tr>
+                    <td
+                      style={{ cursor: "pointer" }}
+                      onClick={() => {
+                        setStation({ ...station, destination: each });
+                        setBooking({ ...booking, destination: each });
+                      }}
+                    >
+                      {each}
+                    </td>
+                  </tr>
+                );
+              })}
+            </table>
+          </div>
+        </div>
+      )}
       <NavBar />
       <div className="book-train">
         <div className="book-train-input-container">
@@ -129,6 +198,7 @@ const BookTrain = () => {
           <div>
             <label>Source Station : </label>
             <input
+              ref={myRef1}
               type="text"
               name="source"
               value={station.source}
@@ -139,12 +209,24 @@ const BookTrain = () => {
                 setAvailableTrains(null);
                 setSeats(null);
                 setPrompt({ state: "" });
+                setAllStationsSource(
+                  allStations.filter((each) => {
+                    return each
+                      .toLowerCase()
+                      .startsWith(e.target.value.toLowerCase());
+                  })
+                );
+              }}
+              onClick={() => {
+                setAllStationsSource(allStations);
+                setAllStationsDestination(null);
               }}
             />
           </div>
           <div>
             <label>Destination Station : </label>
             <input
+              ref={myRef2}
               type="text"
               name="destination"
               value={station.destination}
@@ -155,6 +237,17 @@ const BookTrain = () => {
                 setAvailableTrains(null);
                 setSeats(null);
                 setPrompt({ state: "" });
+                setAllStationsDestination(
+                  allStations.filter((each) => {
+                    return each
+                      .toLowerCase()
+                      .startsWith(e.target.value.toLowerCase());
+                  })
+                );
+              }}
+              onClick={() => {
+                setAllStationsDestination(allStations);
+                setAllStationsSource(null);
               }}
             />
           </div>
@@ -162,6 +255,8 @@ const BookTrain = () => {
             <button
               type="submit"
               onClick={() => {
+                setAllStationsDestination(null);
+                setAllStationsSource(null);
                 fetchAvailableTrains();
                 setBooking({
                   ...booking,
@@ -246,6 +341,9 @@ const BookTrain = () => {
                                   case 5:
                                     day = "F";
                                     break;
+                                  default:
+                                    day = "x";
+                                    break;
                                 }
                                 return <div>{day}</div>;
                               })}
@@ -329,7 +427,7 @@ const BookTrain = () => {
           )
         )}
       </div>
-    </>
+    </div>
   );
 };
 
