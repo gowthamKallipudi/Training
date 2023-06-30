@@ -68,7 +68,11 @@ public class BookTrainController {
         HashSet<Integer> trainIds = new HashSet<>();
         for(Integer routeId : routeIds1) {
             Route route = routeRepository.findTrainsByRoute(routeId);
-            trainIds.add(route.getTrain().getId());
+            Integer routeSeq1 = routeDetailsRepository.findSeqNoByRouteIdStationId(routeId, stationRepository.findByStation(sourceStation).getId());
+            Integer routeSeq2 = routeDetailsRepository.findSeqNoByRouteIdStationId(routeId, stationRepository.findByStation(destinationStation).getId());
+            if(routeSeq2 > routeSeq1) {
+                trainIds.add(route.getTrain().getId());
+            }
         }
         Map<String, List<Integer>> data = new HashMap<>();
         for(Integer train : trainIds) {

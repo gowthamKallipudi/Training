@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { auth } from "../../utilities/authentication";
+import { auth, checkAuth } from "../../utilities/authentication";
 import { Navigate } from "react-router";
 import NavBar from "../navbar/NavBar";
 import "./booktrain.css";
@@ -34,9 +34,13 @@ const BookTrain = () => {
   const navigate = useNavigate();
   const [seatTypes, setSeatTypes] = useState([]);
   const [prompt, setPrompt] = useState({ state: "" });
+  const [allstations, setAllStations] = useState(null);
+  useEffect(() => {
+    if (checkAuth()) fetchStations();
+  }, []);
 
   const state = auth.getState();
-  if (state.lastName === "") {
+  if (state.userName === "") {
     return <Navigate to="/login" />;
   }
 
@@ -82,15 +86,26 @@ const BookTrain = () => {
       },
       body: JSON.stringify(booking),
     });
-    if(response.status === 201) {
-      setPrompt({state : "success"});
+    if (response.status === 201) {
+      setPrompt({ state: "success" });
       setAvailableTrains(null);
       setStation(initialData);
     } else {
-      setPrompt({state : "failure"});
+      setPrompt({ state: "failure" });
       setAvailableTrains(null);
       setStation(initialData);
     }
+  };
+
+  const fetchStations = async () => {
+    const response = await fetch(`http://localhost:8080/api/getAllStations`, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    const data = await response.json();
+    setAllStations(Object.values(data));
   };
 
   return (
@@ -107,7 +122,7 @@ const BookTrain = () => {
                 setDate(currentDate);
                 setAvailableTrains(null);
                 setSeats(null);
-                setPrompt({state : ""});
+                setPrompt({ state: "" });
               }}
             />
           </div>
@@ -123,7 +138,7 @@ const BookTrain = () => {
                 setBooking({ ...booking, [e.target.name]: e.target.value });
                 setAvailableTrains(null);
                 setSeats(null);
-                setPrompt({state : ""});
+                setPrompt({ state: "" });
               }}
             />
           </div>
@@ -139,7 +154,7 @@ const BookTrain = () => {
                 setBooking({ ...booking, [e.target.name]: e.target.value });
                 setAvailableTrains(null);
                 setSeats(null);
-                setPrompt({state : ""});
+                setPrompt({ state: "" });
               }}
             />
           </div>
@@ -159,11 +174,12 @@ const BookTrain = () => {
             </button>
           </div>
         </div>
-        {prompt.state !== "" && (prompt.state === "success" ? (
-          <div className="prompt">Ticket booked successfully ...</div>
-        ) : (
-          <div className="prompt">Ticket booking not successful ...</div>
-        ))}
+        {prompt.state !== "" &&
+          (prompt.state === "success" ? (
+            <div className="prompt">Ticket booked successfully ...</div>
+          ) : (
+            <div className="prompt">Ticket booking not successful ...</div>
+          ))}
         {bookingState ? (
           <div className="booking-popup">
             Confirm Adding Train Ticket ...
@@ -209,9 +225,31 @@ const BookTrain = () => {
                         <tr key={index}>
                           <td>{eachKey}</td>
                           <td>
-                            {availableTrains[eachKey].map((eachDay) => {
-                              return <div>{eachDay}</div>;
-                            })}
+                            <div className="days-viewer">
+                              {availableTrains[eachKey].map((eachDay) => {
+                                var day = "";
+                                switch (eachDay) {
+                                  case 0:
+                                  case 6:
+                                    day = "S";
+                                    break;
+                                  case 1:
+                                    day = "M";
+                                    break;
+                                  case 2:
+                                  case 4:
+                                    day = "T";
+                                    break;
+                                  case 3:
+                                    day = "W";
+                                    break;
+                                  case 5:
+                                    day = "F";
+                                    break;
+                                }
+                                return <div>{day}</div>;
+                              })}
+                            </div>
                           </td>
                           <td>
                             <button

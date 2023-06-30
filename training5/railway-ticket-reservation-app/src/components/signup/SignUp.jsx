@@ -7,7 +7,8 @@ const initialData = {
   firstName: "",
   emailId: "",
   password: "",
-  dob: ""
+  dob: "",
+  userName: ""
 };
 
 const SignUp = () => {
@@ -36,12 +37,12 @@ const SignUp = () => {
     <div className="signup-container">
       <form>
         <div className="input-fields">
-          <label>Last Name : </label>
+          <label>User Name : </label>
           <input
             type="text"
-            name="lastName"
-            value={signUpData.lastName}
-            placeholder="Enter your last name"
+            name="userName"
+            value={signUpData.userName}
+            placeholder="Enter your user name"
             onChange={(e) => {
               if (prompt) setPrompt(!prompt);
               setLoginData({ ...signUpData, [e.target.name]: e.target.value });
@@ -52,6 +53,19 @@ const SignUp = () => {
               <div className="prompt">User name already exist ...</div>
             </>
           )}
+        </div>
+        <br />
+        <div className="input-fields">
+          <label>Last Name : </label>
+          <input
+            type="text"
+            name="lastName"
+            value={signUpData.lastName}
+            placeholder="Enter your last name"
+            onChange={(e) => {
+              setLoginData({ ...signUpData, [e.target.name]: e.target.value });
+            }}
+          />
         </div>
         <br />
         <div className="input-fields">

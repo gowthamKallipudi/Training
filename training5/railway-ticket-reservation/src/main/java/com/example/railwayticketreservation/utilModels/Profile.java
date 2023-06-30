@@ -9,6 +9,7 @@ public class Profile {
     private String firstName;
     private LocalDate dob;
     private String latestPage;
+    private String userName;
 
     public Profile() {
     }
@@ -59,5 +60,13 @@ public class Profile {
 
     public void setLatestPage(String latestPage) {
         this.latestPage = latestPage;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

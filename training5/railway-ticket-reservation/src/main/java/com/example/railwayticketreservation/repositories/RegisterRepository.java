@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface RegisterRepository extends JpaRepository<Register, Integer> {
     Optional<Register> findByLastName(String lastName);
+
+    Optional<Register> findByUserName(String userName);
 }

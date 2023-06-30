@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface StationRepository extends JpaRepository<Station, Integer> {
     @Query(value = "SELECT * FROM m_station WHERE name = ?1", nativeQuery = true)
@@ -12,4 +13,7 @@ public interface StationRepository extends JpaRepository<Station, Integer> {
 
     @Query(value = "SELECT name FROM m_station", nativeQuery = true)
     List<String> findAllStations();
+
+    @Query(value = "SELECT * FROM m_station WHERE name = ?1", nativeQuery = true)
+    Optional<Station> findByStationName(String name);
 }

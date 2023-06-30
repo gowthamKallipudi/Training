@@ -45,7 +45,7 @@ public class BookingsController {
         for(Bookings booking1 : bookings) {
             Booking booking = new Booking();
             booking.setBookingId(booking1.getBookingId());
-            booking.setUserName(booking1.getUser().getLastName());
+            booking.setUserName(booking1.getUser().getUserName());
             booking.setTrainName(booking1.getRoute().getTrain().getName());
             booking.setDate(booking1.getDate());
             booking.setCoach(booking1.getCoach());

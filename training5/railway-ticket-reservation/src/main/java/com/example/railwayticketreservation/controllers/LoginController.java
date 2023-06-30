@@ -21,7 +21,7 @@ public class LoginController {
 
     @PostMapping("api/checkUser")
     public ResponseEntity<?> checkUser(@RequestBody LoginCheck loginCheck){
-        Optional<Register> user = registerRepository.findByLastName(loginCheck.getUserName());
+        Optional<Register> user = registerRepository.findByUserName(loginCheck.getUserName());
         if(user.isPresent()) {
             if((user.get().getIdLogin().getPassword()).compareTo(loginCheck.getPassword()) == 0) {
                 Profile profile = new Profile();
@@ -31,6 +31,7 @@ public class LoginController {
                 profile.setFirstName(user.get().getFirstName());
                 profile.setDob(user.get().getDob());
                 profile.setLatestPage(user.get().getLatestPage());
+                profile.setUserName(user.get().getUserName());
                 return new ResponseEntity<>(profile, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>("User Not Authenticated", HttpStatus.UNAUTHORIZED);

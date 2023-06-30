@@ -29,6 +29,9 @@ public class Register {
     @Column(nullable = false)
     private String latestPage;
 
+    @Column(nullable = false, unique = true)
+    private String userName;
+
     @OneToOne(mappedBy = "id")
     private Login idLogin;
 
@@ -100,5 +103,13 @@ public class Register {
 
     public void setLatestPage(String latestPage) {
         this.latestPage = latestPage;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

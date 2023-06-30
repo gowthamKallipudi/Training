@@ -14,7 +14,7 @@ const Profile = () => {
   }, [editState]);
 
   const state = auth.getState();
-  if (state.lastName === "") {
+  if (state.userName === "") {
     return <Navigate to="/login" />;
   }
 
@@ -43,7 +43,6 @@ const Profile = () => {
   return (
     <>
       <NavBar />
-      <div className="profile-heading">My Profile</div>
       {editState ? (
         <div>
           <table className="profile-table">
@@ -54,13 +53,13 @@ const Profile = () => {
             </thead>
             <tbody>
               <tr>
-                <td>Last Name</td>
+                <td>User Name</td>
                 <td>
                   <input
                     type="text"
-                    name="lastName"
-                    value={profileData.lastName}
-                    placeholder="Enter your Last Name"
+                    name="userName"
+                    value={profileData.userName}
+                    placeholder="Enter your User Name"
                     onChange={(e) => {
                       if(prompt) setPrompt(!prompt);
                       setProfileData({
@@ -74,6 +73,23 @@ const Profile = () => {
                       <div className="prompt">User name already exist ...</div>
                     </>
                   )}
+                </td>
+              </tr>
+              <tr>
+                <td>last Name</td>
+                <td>
+                  <input
+                    type="text"
+                    name="lastName"
+                    value={profileData.lastName}
+                    placeholder="Enter your Last Name"
+                    onChange={(e) => {
+                      setProfileData({
+                        ...profileData,
+                        [e.target.name]: e.target.value,
+                      });
+                    }}
+                  />
                 </td>
               </tr>
               <tr>
@@ -163,10 +179,14 @@ const Profile = () => {
               <table className="profile-table">
                 <thead>
                   <tr>
-                    <th colSpan={2}>Profile</th>
+                    <th colSpan={2}>My Profile</th>
                   </tr>
                 </thead>
                 <tbody>
+                <tr>
+                    <td>User Name </td>
+                    <td>{profileData.userName}</td>
+                  </tr>
                   <tr>
                     <td>Last Name </td>
                     <td>{profileData.lastName}</td>

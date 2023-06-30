@@ -10,4 +10,7 @@ public interface RouteDetailsRepository extends JpaRepository<RouteDetails, Inte
 
     @Query(value = "SELECT route_id FROM m_route_details WHERE station_id = ?1", nativeQuery = true)
     List<Integer> findAllRoutesWithStationId(Integer stationId);
+
+    @Query(value = "SELECT seq_no FROM m_route_details WHERE route_id = ?1 AND station_id = ?2", nativeQuery = true)
+    Integer findSeqNoByRouteIdStationId(Integer routeId, Integer stationId);
 }

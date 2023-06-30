@@ -6,7 +6,8 @@ const initialState = {
   lastName: "",
   firstName: "",
   dob: "",
-  latestPage: ""
+  latestPage: "",
+  userName: ""
 };
 
 const autentication = (state = initialState, action) => {

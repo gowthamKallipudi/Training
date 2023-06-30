@@ -25,7 +25,7 @@ public class RegisterController {
 
     @PostMapping("api/addUser")
     public ResponseEntity<String> addUser(@RequestBody User user) {
-        Optional<Register> user1 = registerRepository.findByLastName(user.getLastName());
+        Optional<Register> user1 = registerRepository.findByUserName(user.getUserName());
         if (user1.isPresent()) {
             return new ResponseEntity<>("User Data Failed To Add", HttpStatus.BAD_REQUEST);
         }else {
@@ -35,6 +35,7 @@ public class RegisterController {
             register.setFirstName(user.getFirstName());
             register.setDob(user.getDob());
             register.setLatestPage("");
+            register.setUserName(user.getUserName());
             Register register1 = registerRepository.save(register);
             Login login = new Login();
             login.setPassword(user.getPassword());
