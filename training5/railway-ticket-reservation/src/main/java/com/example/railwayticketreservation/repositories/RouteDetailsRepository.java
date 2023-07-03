@@ -13,4 +13,7 @@ public interface RouteDetailsRepository extends JpaRepository<RouteDetails, Inte
 
     @Query(value = "SELECT seq_no FROM m_route_details WHERE route_id = ?1 AND station_id = ?2", nativeQuery = true)
     Integer findSeqNoByRouteIdStationId(Integer routeId, Integer stationId);
+
+    @Query(value = "SELECT * FROM m_route_details WHERE route_id = ?1 ORDER BY seq_no", nativeQuery = true)
+    List<RouteDetails> findByRouteId(Integer routeId);
 }

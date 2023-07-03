@@ -41,6 +41,7 @@ const BookTrain = () => {
     type: "normal",
   });
   const [datePrompt, setDatePrompt] = useState(false);
+  const [routeDetails, setRouteDetails] = useState(null); 
   const myRef1 = useRef();
   const myRef2 = useRef();
 
@@ -148,6 +149,19 @@ const BookTrain = () => {
     setAvailableTrains(null);
     setStation(initialData);
   };
+
+  const fetchRouteDetails = async (trainName) => {
+    const response = await fetch(`http://localhost:8080/api/routeDetails?day=${date.getDay()}&trainName=${trainName}`, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    const data = await response.json();
+    setRouteDetails(data);
+    console.log(data);
+  };
+
 
   return (
     <div
@@ -361,6 +375,7 @@ const BookTrain = () => {
                     <tr>
                       <th>Train Name</th>
                       <th>Weekly Status</th>
+                      <th>Route Details</th>
                       <th>Availability</th>
                     </tr>
                   </thead>
@@ -398,6 +413,9 @@ const BookTrain = () => {
                                 return <div>{day}</div>;
                               })}
                             </div>
+                          </td>
+                          <td>
+                            <button type="submit" onClick={() => {fetchRouteDetails(eachKey)}}>Route Details</button>
                           </td>
                           <td>
                             <button
