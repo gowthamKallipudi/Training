@@ -50,7 +50,7 @@ const Bookings = () => {
       <NavBar />
       {prompt ? (
       <div className="cancel-popup">
-            Confirm Adding Train Ticket ...
+            Confirm Cancelling Train Ticket ...
             <br />
             <br />
             <button
