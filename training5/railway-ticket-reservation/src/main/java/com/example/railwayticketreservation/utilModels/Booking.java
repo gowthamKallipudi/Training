@@ -11,6 +11,8 @@ public class Booking {
     private Integer seatNo;
     private String source;
     private String destination;
+    private String type;
+    private String status;
 
     public Booking() {
     }
@@ -77,5 +79,21 @@ public class Booking {
 
     public void setDestination(String destination) {
         this.destination = destination;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

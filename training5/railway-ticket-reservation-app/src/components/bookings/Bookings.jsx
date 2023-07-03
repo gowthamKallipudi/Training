@@ -6,6 +6,8 @@ import "./bookings.css";
 
 const Bookings = () => {
   const [bookingsData, setBookingsData] = useState(null);
+  const [prompt, setPrompt] = useState(false);
+  const [cancelId, setCancelId] = useState(null);
 
   useEffect(() => {
     if (checkAuth()) fetchBookings();
@@ -30,38 +32,115 @@ const Bookings = () => {
     setBookingsData(data);
   };
 
+  const cancelTicket = async (bookingId) => {
+    const response = await fetch(
+      `http://localhost:8080/api/cancelBooking/${bookingId}`,
+      {
+        method: "PUT",
+        headers: {
+          "content-type": "application/json",
+        },
+      }
+    );
+    fetchBookings();
+  };
+
   return (
     <>
       <NavBar />
-      {bookingsData == null ? (
-        <div>No Data Found</div>
+      {prompt ? (
+      <div className="cancel-popup">
+            Confirm Adding Train Ticket ...
+            <br />
+            <br />
+            <button
+              type="button"
+              onClick={() => {
+                cancelTicket(cancelId);
+                setPrompt(!prompt);
+              }}
+            >
+              Confirm Booking
+            </button>
+            <br />
+            <br />
+            <button
+              type="button"
+              onClick={() => {
+                setPrompt(!prompt);
+              }}
+            >
+              Cancel
+            </button>
+          </div>
+          )
+      : bookingsData === null || Object.keys(bookingsData).length === 0 ? (
+        <div className="no-data">No Data Found</div>
       ) : (
         <div className="bookings-main">
           <table className="bookings-table">
             <thead>
               <tr>
-                <th>Booking Id</th>
-                <th>User Name</th>
+                <th id="booking-id">Booking Id</th>
+                <th id="userName">User Name</th>
                 <th>Train Name</th>
-                <th>Date</th>
-                <th>Coach</th>
-                <th>Seat Number</th>
-                <th>Source</th>
-                <th>Destination</th>
+                <th id="date">Date</th>
+                <th id="coach">Coach</th>
+                <th id="seat-number">Seat Number</th>
+                <th id="source">Source</th>
+                <th id="destination">Destination</th>
+                <th id="type">Type</th>
+                <th>Status</th>
               </tr>
             </thead>
             <tbody>
               {bookingsData.map((eachBooking) => {
+                var seatType = null;
+                switch (eachBooking.seatNo % 6) {
+                  case 0:
+                  case 1:
+                    seatType = "WS";
+                    break;
+                  case 2:
+                  case 5:
+                    seatType = "MS";
+                    break;
+                  case 3:
+                  case 4:
+                    seatType = "AS";
+                    break;
+                  default:
+                    seatType = "";
+                    break;
+                }
                 return (
-                  <tr key={eachBooking.id}>
-                    <td>{eachBooking.bookingId}</td>
-                    <td>{eachBooking.userName}</td>
+                  <tr key={eachBooking.bookingId}>
+                    <td id="booking-id">{eachBooking.bookingId}</td>
+                    <td id="userName">{eachBooking.userName}</td>
                     <td>{eachBooking.trainName}</td>
-                    <td>{eachBooking.date}</td>
-                    <td>{eachBooking.coach}</td>
-                    <td>{eachBooking.seatNo}</td>
-                    <td>{eachBooking.source}</td>
-                    <td>{eachBooking.destination}</td>
+                    <td id="date">{eachBooking.date}</td>
+                    <td id="coach">{eachBooking.coach}</td>
+                    <td id="seat-number">{eachBooking.seatNo} - {seatType}</td>
+                    <td id="source">{eachBooking.source}</td>
+                    <td id="destination">{eachBooking.destination}</td>
+                    <td id="type">{eachBooking.type}</td>
+                    <td>
+                      {eachBooking.status === "Booked" ? (
+                        <div>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setCancelId(eachBooking.bookingId);
+                              setPrompt(!prompt)
+                            }}
+                          >
+                            Cancel Ticket
+                          </button>
+                        </div>
+                      ) : (
+                        <div>{eachBooking.status}</div>
+                      )}
+                    </td>
                   </tr>
                 );
               })}

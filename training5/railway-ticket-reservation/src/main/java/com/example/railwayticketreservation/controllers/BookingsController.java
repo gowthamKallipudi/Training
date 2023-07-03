@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/")
@@ -38,6 +39,37 @@ public class BookingsController {
     @Autowired
     StationRepository stationRepository;
 
+    @PutMapping("api/cancelBooking/{bookingId}")
+    public ResponseEntity<String> cancelBooking(@PathVariable("bookingId") Integer bookingId) {
+        Optional<Bookings> bookings = bookingsRepository.findByBookingId(bookingId);
+        if(bookings.isPresent()) {
+            bookings.get().setStatus("Cancelled");
+            bookingsRepository.save(bookings.get());
+            return new ResponseEntity<>("Cancelled Successfully", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Not Cancelled", HttpStatus.BAD_REQUEST);
+    }
+
+    @PutMapping("api/addTatkal")
+    public ResponseEntity<?> addTatkal(@RequestBody BookingDetails bookingDetails) {
+        Integer trainId = trainRepository.findIdByName(bookingDetails.getTrainName());
+        Integer routeId = routeRepository.findRouteIdByTrainIdAndStartDay(trainId, bookingDetails.getDay());
+        List<Integer> bookings = bookingsRepository.findBookingsByStatus(bookingDetails.getCoach(), routeId, bookingDetails.getDate(), "Cancelled");
+        Optional<Bookings> booking = Optional.empty();
+        if(bookings.size() > 0)
+            booking = bookingsRepository.findByBookingId(bookings.get(0));
+        if(booking.isPresent()) {
+            booking.get().setUser(registerRepository.findById(bookingDetails.getUserId()).get());
+            booking.get().setStationS(stationRepository.findByStationName(bookingDetails.getSource()).get());
+            booking.get().setStationD(stationRepository.findByStationName(bookingDetails.getDestination()).get());
+            booking.get().setType("Tatkal");
+            booking.get().setStatus("Booked");
+            bookingsRepository.save(booking.get());
+            return new ResponseEntity<>("Created SuccessFully", HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
     @GetMapping("api/getBookings/{user}")
     public ResponseEntity<List<Booking>> getBookings(@PathVariable("user") Integer userId) {
         List<Bookings> bookings = bookingsRepository.findAllByUserId(userId);
@@ -52,6 +84,8 @@ public class BookingsController {
             booking.setSeatNo(booking1.getSeatNo());
             booking.setSource(booking1.getStationS().getName());
             booking.setDestination(booking1.getStationD().getName());
+            booking.setType(booking1.getType());
+            booking.setStatus(booking1.getStatus());
             bookings1.add(booking);
         }
         return new ResponseEntity<>(bookings1, HttpStatus.OK);
@@ -69,6 +103,8 @@ public class BookingsController {
         bookings.setUser(register);
         bookings.setStationS(stationRepository.findByStation(bookingDetails.getSource()));
         bookings.setStationD(stationRepository.findByStation(bookingDetails.getDestination()));
+        bookings.setType("Normal");
+        bookings.setStatus("Booked");
         LocalDate date = bookingDetails.getDate();
         Integer total = trainCoachRepository.findByCoach(bookingDetails.getCoach()).getNoOfSeats();
         Integer booked = bookingsRepository.findByCoach(bookingDetails.getCoach(), routeId, date);

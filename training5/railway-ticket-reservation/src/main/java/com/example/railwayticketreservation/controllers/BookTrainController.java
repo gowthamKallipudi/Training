@@ -33,8 +33,21 @@ public class BookTrainController {
     @Autowired
     RouteRepository routeRepository;
 
-    @GetMapping("/api/availableTrains")
-    public ResponseEntity<Map<String, Integer>> availableTrains(@RequestParam(name = "name") String name, @RequestParam(name = "date") LocalDate date, @RequestParam(name = "day") Integer day) {
+    @GetMapping("api/getCancelledSeats")
+    public ResponseEntity<Map<String, Integer>> getCancelledSeats(@RequestParam(name = "name") String name, @RequestParam(name = "date") LocalDate date, @RequestParam(name = "day") Integer day) {
+        Integer trainId = trainRepository.findIdByName(name);
+        Integer routeId = routeRepository.findRouteIdByTrainIdAndStartDay(trainId, day);
+        List<TrainCoach> trainCoachList = trainCoachRepository.findAll();
+        System.out.println(routeId);
+        Map<String, Integer> coaches = new HashMap<>();
+        for(TrainCoach trainCoach : trainCoachList) {
+            coaches.put(trainCoach.getCoach(), bookingsRepository.getBookingsByStatus(trainCoach.getCoach(), routeId, date, "Cancelled"));
+        }
+        return new ResponseEntity<>(coaches, HttpStatus.OK);
+    }
+
+    @GetMapping("/api/availableTrainSeats")
+    public ResponseEntity<Map<String, Integer>> availableTrainSeats(@RequestParam(name = "name") String name, @RequestParam(name = "date") LocalDate date, @RequestParam(name = "day") Integer day) {
         Integer trainId = trainRepository.findIdByName(name);
         Integer routeId = routeRepository.findRouteIdByTrainIdAndStartDay(trainId, day);
         List<TrainCoach> trainCoachList = trainCoachRepository.findAll();

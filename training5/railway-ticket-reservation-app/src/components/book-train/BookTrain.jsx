@@ -35,6 +35,11 @@ const BookTrain = () => {
   const [allStations, setAllStations] = useState(null);
   const [allStationsSource, setAllStationsSource] = useState(null);
   const [allStationsDestination, setAllStationsDestination] = useState(null);
+  const [decision, setDecision] = useState({
+    state: false,
+    data: "",
+    type: "normal",
+  });
   const myRef1 = useRef();
   const myRef2 = useRef();
 
@@ -66,7 +71,7 @@ const BookTrain = () => {
 
   const fetchSeats = async (trainName) => {
     const response = await fetch(
-      `http://localhost:8080/api/availableTrains?name=${trainName}&date=${date
+      `http://localhost:8080/api/availableTrainSeats?name=${trainName}&date=${date
         .toISOString()
         .slice(0, 10)}&day=${date.getDay()}`,
       {
@@ -91,13 +96,11 @@ const BookTrain = () => {
     });
     if (response.status === 201) {
       setPrompt({ state: "success" });
-      setAvailableTrains(null);
-      setStation(initialData);
     } else {
       setPrompt({ state: "failure" });
-      setAvailableTrains(null);
-      setStation(initialData);
     }
+    setAvailableTrains(null);
+    setStation(initialData);
   };
 
   const fetchStations = async () => {
@@ -109,6 +112,40 @@ const BookTrain = () => {
     });
     const data = await response.json();
     setAllStations(Object.values(data));
+  };
+
+  const fetchTatkalSeats = async (trainName) => {
+    const response = await fetch(
+      `http://localhost:8080/api/getCancelledSeats?name=${trainName}&date=${date
+        .toISOString()
+        .slice(0, 10)}&day=${date.getDay()}`,
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+        },
+      }
+    );
+    const data = await response.json();
+    setSeats(data);
+    setSeatTypes(Object.keys(data));
+  };
+
+  const addTatkal = async () => {
+    const response = await fetch(`http://localhost:8080/api/addTatkal`, {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(booking),
+    });
+    if (response.status === 201) {
+      setPrompt({ state: "success" });
+    } else {
+      setPrompt({ state: "failure" });
+    }
+    setAvailableTrains(null);
+    setStation(initialData);
   };
 
   return (
@@ -263,6 +300,7 @@ const BookTrain = () => {
                   date: date.toISOString().slice(0, 10),
                   day: date.getDay(),
                 });
+                setDecision({ state: false, data: "", type: "normal" });
               }}
             >
               Search Trains
@@ -275,6 +313,7 @@ const BookTrain = () => {
           ) : (
             <div className="prompt">Ticket booking not successful ...</div>
           ))}
+        {/* {availableTrains !== null && Object.keys(availableTrains) === 0 && (<div className="no-trains">No Trains Available</div>)} */}
         {bookingState ? (
           <div className="booking-popup">
             Confirm Adding Train Ticket ...
@@ -283,7 +322,7 @@ const BookTrain = () => {
             <button
               type="button"
               onClick={() => {
-                addBooking();
+                decision.type === "normal" ? addBooking() : addTatkal();
                 setBookingState(false);
                 setAvailableTrains(null);
               }}
@@ -302,8 +341,8 @@ const BookTrain = () => {
               Cancel
             </button>
           </div>
-        ) : (
-          availableTrains != null && (
+        ) : ( 
+          availableTrains != null && ((Object.keys(availableTrains).length !==0) ? (
             <div className="book-train-sub-container">
               <div className="train-display-container child-cont">
                 <table className="book-train-table">
@@ -353,7 +392,8 @@ const BookTrain = () => {
                             <button
                               type="submit"
                               onClick={() => {
-                                fetchSeats(eachKey);
+                                setDecision({ state: true, data: eachKey, type: "normal" });
+                                setSeats(null);
                                 setBooking({
                                   ...booking,
                                   trainName: eachKey,
@@ -370,8 +410,30 @@ const BookTrain = () => {
                   </tbody>
                 </table>
               </div>
+              {decision.state && (
+                <div className="decision-block">
+                  <button
+                    type="submit"
+                    onClick={() => {
+                      fetchSeats(decision.data);
+                      setDecision({ state: false, data: "", type: "normal" });
+                    }}
+                  >
+                    Normal
+                  </button>
+                  <button
+                    type="submit"
+                    onClick={() => {
+                      fetchTatkalSeats(decision.data);
+                      setDecision({ state: false, data: "", type: "tatkal" });
+                    }}
+                  >
+                    Tatkal
+                  </button>
+                </div>
+              )}
               {seats !== null && (
-                <div className="availability-container child-cont">
+                <div className="availability-container">
                   <table className="availability-table">
                     <thead>
                       <tr>
@@ -424,7 +486,7 @@ const BookTrain = () => {
                 </div>
               )}
             </div>
-          )
+          ) : (<div className="no-trains">No Trains Available</div>))
         )}
       </div>
     </div>

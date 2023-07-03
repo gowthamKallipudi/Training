@@ -24,12 +24,12 @@
   border: none;
   color: rgba(0, 0, 0, 0.714);
   padding: 15px 30px;
-  border-radius: 5%;
+  border-radius: 5px;
 }
 
 .book-train button:hover {
   background-color: orangered;
-  padding: 13px 28px;
+  padding: 13.5px 28px;
   border: 2px solid white;
 }
 
@@ -42,7 +42,7 @@
   padding: 2%;
   padding-left: 5%;
   padding-right: 5%;
-  border-radius: 4%; 
+  border-radius: 8px; 
 }
 
 .book-train-input-container {
@@ -75,6 +75,19 @@
 .availability-container {
   float: right;
   width: 30%;
+}
+
+.decision-block {
+  float: right;
+  width: 28%;
+  height: 150px;
+  margin-top: 0.5%;
+  margin-right: 2%;
+  background-color: rgba(196, 183, 167, 0.86);
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  border-radius: 8px;
 }
 
 .availability-table {
@@ -125,10 +138,16 @@
 }
 
 .book-train-full-page {
-  height: 100vh;
-  width: 100vw;
+  height: 94vh;
+  width: 99vw;
 }
 
 .drop-down-station {
   border-collapse: collapse;
+}
+
+.no-trains {
+  text-align: center;
+  color: red;
+  font-size: larger;
 }

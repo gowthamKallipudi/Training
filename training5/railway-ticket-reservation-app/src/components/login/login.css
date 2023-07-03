@@ -9,7 +9,7 @@ body {
   height: fit-content;
   width: fit-content;
   padding: 2%;
-  border-radius: 4%;
+  border-radius: 5px;
   text-align: end;
 }
 
@@ -18,7 +18,7 @@ body {
   border: none;
   color: aliceblue;
   padding: 15px 30px;
-  border-radius: 5%;
+  border-radius: 5px;
 }
 
 .submit-button button:hover {

@@ -21,6 +21,12 @@ public class Bookings {
     @Column(nullable = false)
     private Integer seatNo;
 
+    @Column(nullable = false)
+    private String type;
+
+    @Column(nullable = false)
+    private String status;
+
     @ManyToOne
     @JoinColumn(name = "source", nullable = false)
     private Station stationS;
@@ -99,5 +105,21 @@ public class Bookings {
 
     public void setStationD(Station stationD) {
         this.stationD = stationD;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
