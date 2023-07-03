@@ -20,7 +20,7 @@ td {
   background-color: #4caf50;
   border: none;
   color: aliceblue;
-  padding: 12px 22px;
+  padding: 8px 18px;
   border-radius: 5px;
 }
 
@@ -32,9 +32,9 @@ td {
   border-radius: 5px;
 }
 
-.bookings-main .cancel-popup button:hover {
+.bookings-main button:hover {
   background-color: orangered;
-  padding: 10.5px 20px;
+  padding: 6.5px 20px;
   border: 2px solid rgb(255, 255, 255);
 }
 

@@ -49,32 +49,31 @@ const Bookings = () => {
     <>
       <NavBar />
       {prompt ? (
-      <div className="cancel-popup">
-            Confirm Cancelling Train Ticket ...
-            <br />
-            <br />
-            <button
-              type="button"
-              onClick={() => {
-                cancelTicket(cancelId);
-                setPrompt(!prompt);
-              }}
-            >
-              Confirm Booking
-            </button>
-            <br />
-            <br />
-            <button
-              type="button"
-              onClick={() => {
-                setPrompt(!prompt);
-              }}
-            >
-              Cancel
-            </button>
-          </div>
-          )
-      : bookingsData === null || Object.keys(bookingsData).length === 0 ? (
+        <div className="cancel-popup">
+          Confirm Cancelling Train Ticket ...
+          <br />
+          <br />
+          <button
+            type="button"
+            onClick={() => {
+              cancelTicket(cancelId);
+              setPrompt(!prompt);
+            }}
+          >
+            Confirm Booking
+          </button>
+          <br />
+          <br />
+          <button
+            type="button"
+            onClick={() => {
+              setPrompt(!prompt);
+            }}
+          >
+            Cancel
+          </button>
+        </div>
+      ) : bookingsData === null || Object.keys(bookingsData).length === 0 ? (
         <div className="no-data">No Data Found</div>
       ) : (
         <div className="bookings-main">
@@ -95,6 +94,7 @@ const Bookings = () => {
             </thead>
             <tbody>
               {bookingsData.map((eachBooking) => {
+                const date = new Date();
                 var seatType = null;
                 switch (eachBooking.seatNo % 6) {
                   case 0:
@@ -120,18 +120,21 @@ const Bookings = () => {
                     <td>{eachBooking.trainName}</td>
                     <td id="date">{eachBooking.date}</td>
                     <td id="coach">{eachBooking.coach}</td>
-                    <td id="seat-number">{eachBooking.seatNo} - {seatType}</td>
+                    <td id="seat-number">
+                      {eachBooking.seatNo} - {seatType}
+                    </td>
                     <td id="source">{eachBooking.source}</td>
                     <td id="destination">{eachBooking.destination}</td>
                     <td id="type">{eachBooking.type}</td>
                     <td>
-                      {eachBooking.status === "Booked" ? (
+                      {eachBooking.status === "Booked" &&
+                      eachBooking.date < date.toISOString().slice(0, 10) ? (
                         <div>
                           <button
                             type="button"
                             onClick={() => {
                               setCancelId(eachBooking.bookingId);
-                              setPrompt(!prompt)
+                              setPrompt(!prompt);
                             }}
                           >
                             Cancel Ticket

@@ -40,6 +40,7 @@ const BookTrain = () => {
     data: "",
     type: "normal",
   });
+  const [datePrompt, setDatePrompt] = useState(false);
   const myRef1 = useRef();
   const myRef2 = useRef();
 
@@ -229,6 +230,7 @@ const BookTrain = () => {
                 setAvailableTrains(null);
                 setSeats(null);
                 setPrompt({ state: "" });
+                setDatePrompt(false);
               }}
             />
           </div>
@@ -294,7 +296,15 @@ const BookTrain = () => {
               onClick={() => {
                 setAllStationsDestination(null);
                 setAllStationsSource(null);
-                fetchAvailableTrains();
+                const current = new Date();
+                if (
+                  date.toISOString().slice(0, 10) <
+                  current.toISOString().slice(0, 10)
+                ) {
+                  setDatePrompt(true);
+                } else {
+                  fetchAvailableTrains();
+                }
                 setBooking({
                   ...booking,
                   date: date.toISOString().slice(0, 10),
@@ -307,13 +317,13 @@ const BookTrain = () => {
             </button>
           </div>
         </div>
+        {datePrompt && (<div className="date-prompt">Train In The Past Dates Are Not Available... Choose Current or Later Dates</div>)}
         {prompt.state !== "" &&
           (prompt.state === "success" ? (
             <div className="prompt">Ticket booked successfully ...</div>
           ) : (
             <div className="prompt">Ticket booking not successful ...</div>
           ))}
-        {/* {availableTrains !== null && Object.keys(availableTrains) === 0 && (<div className="no-trains">No Trains Available</div>)} */}
         {bookingState ? (
           <div className="booking-popup">
             Confirm Adding Train Ticket ...
@@ -341,8 +351,9 @@ const BookTrain = () => {
               Cancel
             </button>
           </div>
-        ) : ( 
-          availableTrains != null && ((Object.keys(availableTrains).length !==0) ? (
+        ) : (
+          availableTrains != null &&
+          (Object.keys(availableTrains).length !== 0 ? (
             <div className="book-train-sub-container">
               <div className="train-display-container child-cont">
                 <table className="book-train-table">
@@ -392,7 +403,11 @@ const BookTrain = () => {
                             <button
                               type="submit"
                               onClick={() => {
-                                setDecision({ state: true, data: eachKey, type: "normal" });
+                                setDecision({
+                                  state: true,
+                                  data: eachKey,
+                                  type: "normal",
+                                });
                                 setSeats(null);
                                 setBooking({
                                   ...booking,
@@ -486,7 +501,9 @@ const BookTrain = () => {
                 </div>
               )}
             </div>
-          ) : (<div className="no-trains">No Trains Available</div>))
+          ) : (
+            <div className="no-trains">No Trains Available</div>
+          ))
         )}
       </div>
     </div>

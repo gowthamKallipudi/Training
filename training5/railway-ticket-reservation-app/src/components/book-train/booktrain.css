@@ -109,6 +109,12 @@
   font-weight: bolder;
 }
 
+.date-prompt {
+  text-align: center;
+  font-weight: bolder;
+  color: red;
+}
+
 .drop-down {
   width: 80%;
   padding-left: 10%;
