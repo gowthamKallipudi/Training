@@ -128,7 +128,7 @@ const Bookings = () => {
                     <td id="type">{eachBooking.type}</td>
                     <td>
                       {eachBooking.status === "Booked" &&
-                      eachBooking.date < date.toISOString().slice(0, 10) ? (
+                      eachBooking.date >= date.toISOString().slice(0, 10) ? (
                         <div>
                           <button
                             type="button"
