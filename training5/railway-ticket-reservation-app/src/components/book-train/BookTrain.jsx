@@ -41,7 +41,7 @@ const BookTrain = () => {
     type: "normal",
   });
   const [datePrompt, setDatePrompt] = useState(false);
-  const [routeDetails, setRouteDetails] = useState(null); 
+  const [routeDetails, setRouteDetails] = useState(null);
   const myRef1 = useRef();
   const myRef2 = useRef();
 
@@ -151,17 +151,19 @@ const BookTrain = () => {
   };
 
   const fetchRouteDetails = async (trainName) => {
-    const response = await fetch(`http://localhost:8080/api/routeDetails?day=${date.getDay()}&trainName=${trainName}`, {
-      method: "GET",
-      headers: {
-        "content-type": "application/json",
-      },
-    });
+    const response = await fetch(
+      `http://localhost:8080/api/routeDetails?day=${date.getDay()}&trainName=${trainName}`,
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+        },
+      }
+    );
     const data = await response.json();
     setRouteDetails(data);
     console.log(data);
   };
-
 
   return (
     <div
@@ -331,7 +333,12 @@ const BookTrain = () => {
             </button>
           </div>
         </div>
-        {datePrompt && (<div className="date-prompt">Train In The Past Dates Are Not Available... Choose Current or Later Dates</div>)}
+        {datePrompt && (
+          <div className="date-prompt">
+            Train In The Past Dates Are Not Available... Choose Current or Later
+            Dates
+          </div>
+        )}
         {prompt.state !== "" &&
           (prompt.state === "success" ? (
             <div className="prompt">Ticket booked successfully ...</div>
@@ -415,7 +422,14 @@ const BookTrain = () => {
                             </div>
                           </td>
                           <td>
-                            <button type="submit" onClick={() => {fetchRouteDetails(eachKey)}}>Route Details</button>
+                            <button
+                              type="submit"
+                              onClick={() => {
+                                fetchRouteDetails(eachKey);
+                              }}
+                            >
+                              Route Details
+                            </button>
                           </td>
                           <td>
                             <button
@@ -443,6 +457,7 @@ const BookTrain = () => {
                   </tbody>
                 </table>
               </div>
+
               {decision.state && (
                 <div className="decision-block">
                   <button
@@ -514,6 +529,31 @@ const BookTrain = () => {
                           </button>
                         </td>
                       </tr>
+                    </tbody>
+                  </table>
+                </div>
+              )}
+              {routeDetails != null && (
+                <div className="route-details">
+                  <table className="availability-table">
+                    <thead>
+                      <tr>
+                        <td className="close-cross" colSpan={2} onClick={() => setRouteDetails(null)}>X</td>
+                      </tr>
+                      <tr>
+                        <th>Station</th>
+                        <th>Halt</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {routeDetails.map((each) => {
+                        return (
+                          <tr>
+                            <td>{each.station}</td>
+                            <td>{each.halt}</td>
+                          </tr>
+                        );
+                      })}
                     </tbody>
                   </table>
                 </div>

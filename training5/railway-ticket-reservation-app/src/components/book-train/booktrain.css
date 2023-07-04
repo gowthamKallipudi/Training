@@ -157,3 +157,14 @@
   color: red;
   font-size: larger;
 }
+
+.close-cross {
+  padding-right: 50px;
+  color: red;
+  text-align: right;
+  cursor: pointer;
+}
+
+.route-details {
+  float: left;
+}
