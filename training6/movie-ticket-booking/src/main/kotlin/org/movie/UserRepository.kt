@@ -10,39 +10,6 @@ class UserRepository {
     @Inject
     var dataSource : AgroalDataSource? = null
 
-    fun getName(id: Int) = dataSource?.connection?.let { conn ->
-        conn.prepareStatement("select * from users where id = ?").use { stmt ->
-            stmt.setInt(1, id)
-            stmt.executeQuery().use { rs ->
-                if (rs.next()) User(rs.getInt("id"),
-                        rs.getString("username"),
-                        rs.getString("lastname"),
-                        rs.getString("firstname"),
-                        rs.getString("email"),
-                        rs.getInt("phone")) else null
-            }
-        }
-    }
-
-    fun getPersons(): MutableList<User> {
-        val list: MutableList<User> = mutableListOf()
-        dataSource?.connection?.let { conn ->
-            conn.prepareStatement("select * from users").use { stmt ->
-                stmt.executeQuery().use { rs ->
-                    while (rs.next()) {
-                        list.add(User(rs.getInt("id"),
-                                rs.getString("username"),
-                                rs.getString("lastname"),
-                                rs.getString("firstname"),
-                                rs.getString("email"),
-                                rs.getInt("phone")))
-                    }
-                }
-            }
-        }
-        return list
-    }
-
     fun addUser(user: User?) {
         var id: Int = 0
         dataSource?.connection?.let { conn ->
