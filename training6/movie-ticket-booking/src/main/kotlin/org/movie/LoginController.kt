@@ -14,7 +14,7 @@ class LoginController {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    fun loginCheck(login: Login): Boolean? {
+    fun loginCheck(login: Login): Any? {
         return userRepository?.checkUser(login)
     }
 }

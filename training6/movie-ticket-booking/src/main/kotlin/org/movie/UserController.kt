@@ -14,5 +14,7 @@ class UserController {
 
     @POST
     @Path("/addUser")
-    fun addUser(user: User) = userRepository?.addUser(user)
+    fun addUser(user: User): Boolean? {
+        return userRepository?.addUser(user)
+    }
 }

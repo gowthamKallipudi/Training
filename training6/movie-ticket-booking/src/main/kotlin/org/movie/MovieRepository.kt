@@ -105,4 +105,22 @@ class MovieRepository {
         }
         return movieList
     }
+
+    fun fetchMovieByName(movieName: String): Any {
+        dataSource?.connection?.prepareStatement("select * from movies where name = ?").use { preparedStatement ->
+            preparedStatement?.setString(1, movieName)
+            preparedStatement?.executeQuery().use { resultSet ->
+                if(resultSet?.next() == true) {
+                    return Movie(name = resultSet.getString("name"),
+                            language = resultSet.getString("language"),
+                            releaseDate = resultSet.getDate("releaseDate"),
+                            duration = resultSet.getString("duration"),
+                            genre = resultSet.getString("genre"),
+                            description = resultSet.getString("description"),
+                            casting = resultSet.getString("casting"))
+                }
+            }
+        }
+        return false
+    }
 }

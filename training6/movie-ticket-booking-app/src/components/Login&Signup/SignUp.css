@@ -1,0 +1,10 @@
+.signup-container {
+    background-color: rgb(195, 151, 237);
+    height: 200px;
+    width: fit-content;
+    float: right;
+    padding: 30px;
+    text-align: end;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}

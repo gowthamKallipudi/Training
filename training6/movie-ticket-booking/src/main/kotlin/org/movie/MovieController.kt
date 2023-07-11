@@ -36,4 +36,9 @@ class MovieController {
         return movieRepository?.fetchMovieByRegion(name)
     }
 
+    @GET
+    @Path("/getMovie/{movieName}")
+    fun fetchMovieByName(@PathParam("movieName") movieName: String): Any? {
+        return movieRepository?.fetchMovieByName(movieName)
+    }
 }
