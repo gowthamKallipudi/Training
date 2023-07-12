@@ -16,7 +16,7 @@ class BookingController {
 
     @POST
     @Path("/addBooking")
-    fun addBooking(booking: Booking) {
+    fun addBooking(booking: Bookings) {
         bookingRepository?.addBooking(booking);
     }
 

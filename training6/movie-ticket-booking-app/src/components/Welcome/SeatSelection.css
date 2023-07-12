@@ -1,0 +1,7 @@
+.seats button {
+    border: none;
+    width: 52px;
+    height: 30px;
+    border: solid skyblue 2px;
+    background-color: seashell;
+}

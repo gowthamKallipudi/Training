@@ -12,7 +12,7 @@ class MovieRepository {
 
     fun addMovie(movie: Movie) {
         dataSource?.connection?.prepareStatement("INSERT INTO movies (`name`, `language`, `releaseDate`, `duration`," +
-                " `genre`, `description`, `casting`) VALUES (?, ?, ?, ?, ?, ?, ?)").use { preparedStatement ->
+                " `genre`, `description`, `casting`, `imageurl) VALUES (?, ?, ?, ?, ?, ?, ?, ?)").use { preparedStatement ->
                     preparedStatement?.setString(1, movie.name)
                     preparedStatement?.setString(2, movie.language)
                     preparedStatement?.setDate(3, movie.releaseDate)
@@ -20,6 +20,7 @@ class MovieRepository {
                     preparedStatement?.setString(5, movie.genre)
                     preparedStatement?.setString(6, movie.description)
                     preparedStatement?.setString(7, movie.casting)
+                    preparedStatement?.setString(8, movie.imageurl)
 
                     preparedStatement?.executeUpdate()
                 }
@@ -58,7 +59,8 @@ class MovieRepository {
                                 duration = resultSet.getString("duration"),
                                 genre = resultSet.getString("genre"),
                                 description = resultSet.getString("description"),
-                                casting = resultSet.getString("casting")))
+                                casting = resultSet.getString("casting"),
+                                imageurl = resultSet.getString("imageurl")))
                 }
             }
         }
@@ -97,7 +99,8 @@ class MovieRepository {
                                     duration = resultSet.getString("duration"),
                                     genre = resultSet.getString("genre"),
                                     description = resultSet.getString("description"),
-                                    casting = resultSet.getString("casting")))
+                                    casting = resultSet.getString("casting"),
+                                    imageurl = resultSet.getString("imageurl")))
                     }
                 }
             }
@@ -117,7 +120,8 @@ class MovieRepository {
                             duration = resultSet.getString("duration"),
                             genre = resultSet.getString("genre"),
                             description = resultSet.getString("description"),
-                            casting = resultSet.getString("casting"))
+                            casting = resultSet.getString("casting"),
+                            imageurl = resultSet.getString("imageurl"))
                 }
             }
         }

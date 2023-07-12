@@ -8,7 +8,8 @@ data class Movie(var name: String,
                  var duration: String,
                  var genre: String,
                  var description: String,
-                 var casting: String)
+                 var casting: String,
+                 var imageurl: String)
 
 data class Release(var movieName: String,
                    var theatreList: MutableList<String> = mutableListOf())

@@ -20,7 +20,7 @@ class UserRepository {
                 stmt.setString(2, user?.firstname)
                 stmt.setString(3, user?.lastname)
                 stmt.setString(4, user?.email)
-                stmt.setInt(5, user?.phone!!)
+                stmt.setLong(5, user?.phone!!)
 
                 if(stmt.executeUpdate() == 1) {
                     userState = true
@@ -59,7 +59,7 @@ class UserRepository {
                                 firstname = rs.getString("firstname"),
                                 lastname = rs.getString("lastname"),
                                 email = rs.getString("email"),
-                                phone = rs.getInt("phone"))
+                                phone = rs.getLong("phone"))
                         dataSource?.connection?.let { conn ->
                             conn.prepareStatement("select password from password where userid = ?").use { stmt ->
                                 stmt.setInt(1, id)

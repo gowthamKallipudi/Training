@@ -5,5 +5,5 @@ data class User(var id: Int,
                 var firstname: String,
                 var lastname: String,
                 var email: String,
-                var phone: Int,
+                var phone: Long,
                 var password: String = "")

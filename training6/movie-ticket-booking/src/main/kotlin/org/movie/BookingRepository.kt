@@ -10,7 +10,7 @@ class BookingRepository {
     @Inject
     var dataSource: AgroalDataSource? = null
 
-    fun addBooking(booking: Booking) {
+    fun addBooking(booking: Bookings) {
         var userId: Int = 0
         var theatreId: Int = 0
         var regionId: Int = 0
@@ -59,9 +59,11 @@ class BookingRepository {
             preparedStatement?.setInt(4, regionId)
             preparedStatement?.setInt(5, movieId)
             preparedStatement?.setDate(6, booking.date)
-            preparedStatement?.setString(7, booking.seatNo)
+            for(seatNo in booking.seatNo) {
+                preparedStatement?.setString(7, seatNo)
 
-            preparedStatement?.executeUpdate()
+                preparedStatement?.executeUpdate()
+            }
         }
     }
 
