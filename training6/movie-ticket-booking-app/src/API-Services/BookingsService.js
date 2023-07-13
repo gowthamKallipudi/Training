@@ -20,3 +20,15 @@ export const fetchCapacityBookings = async (theatre, show, date) => {
     const data = response.json();
     return data;
 }
+
+export const addBooking = async (bookingData) => {
+    const response = await fetch("http://localhost:8080/booking/addBooking", {
+        method: "POST",
+        headers: {
+            "content-type": "application/json",
+        },
+        body: JSON.stringify(bookingData)
+    })
+    const data = await response.json()
+    return data;
+}

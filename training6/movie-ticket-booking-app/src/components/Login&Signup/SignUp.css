@@ -1,10 +1,43 @@
 .signup-container {
-    background-color: rgb(195, 151, 237);
-    height: 200px;
+    background-color: rgb(176, 136, 212);
+    height: 275px;
     width: fit-content;
     float: right;
     padding: 30px;
     text-align: end;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
+}
+
+.signup-container input {
+    height: 18px;
+    border: solid black 1.5px;
+    margin: 5px;
+    border-radius: 3px;
+}
+
+.signup-container button {
+    border: solid rgb(180, 206, 206) 2px;
+    background-color: rgb(149, 124, 190);
+    height: 40px;
+    width: 120px;
+    border-radius: 5px;
+    margin: 5px;
+    color: white;
+    margin-top: 10px;
+}
+
+.signup-container button:hover {
+    border: solid rgb(171, 195, 201) 2px;
+    background-color: rgb(219, 140, 219);
+    height: 40px;
+    width: 120px;
+    border-radius: 5px;
+    color: white;
+}
+
+.title {
+    text-align: center;
+    font-size: large;
+    margin-bottom: 10px;
 }

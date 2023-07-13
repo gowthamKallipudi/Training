@@ -24,7 +24,7 @@ const SignUp = () => {
     return (
         <>
             <div className="signup-container">
-                SignUp
+                <div className="title">SignUp</div>
                 <div>
                     <label>User Name : </label>
                     <input type="text"

@@ -7,5 +7,5 @@ data class Theatre(var name: String,
                    var region: String)
 
 
-data class TheatreByMovie(var name: String,
+data class Theatres(var name: String,
                           var show: List<String> = mutableListOf())

@@ -17,4 +17,10 @@ class UserController {
     fun addUser(user: User): Boolean? {
         return userRepository?.addUser(user)
     }
+
+    @PUT
+    @Path("/editUser")
+    fun editUser(user: User): String? {
+        return userRepository?.editUser(user)
+    }
 }

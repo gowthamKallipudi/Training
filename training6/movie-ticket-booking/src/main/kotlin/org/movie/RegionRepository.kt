@@ -12,10 +12,12 @@ class RegionRepository {
 
     fun fetchLocations(): MutableList<String> {
         val regionList: MutableList<String> = mutableListOf()
-        dataSource?.connection?.prepareStatement("select name from region").use { preparedStatement ->
-            preparedStatement?.executeQuery().use { resultSet ->
-                while(resultSet?.next() == true) {
-                    regionList.add(resultSet.getString("name"))
+        dataSource?.connection?.use { conn ->
+            conn.prepareStatement("select name from region").use { preparedStatement ->
+                preparedStatement.executeQuery().use { resultSet ->
+                    while (resultSet.next()) {
+                        regionList.add(resultSet.getString("name"))
+                    }
                 }
             }
         }

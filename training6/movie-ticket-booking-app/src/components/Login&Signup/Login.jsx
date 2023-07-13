@@ -25,7 +25,7 @@ const Login = () => {
     return (
         <>
             <div className="login-container">
-                Login
+                <div className="title">Login</div>
                 <div>
                     <label>User Name : </label>
                     <input type="text"

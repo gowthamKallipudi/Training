@@ -1,0 +1,16 @@
+.location-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    gap: 1rem;
+    margin: 20px;
+}
+
+.each-location {
+    background-color: blueviolet;
+    text-align: center;
+    padding-top: 30px;
+    height: 60px;
+    border-radius: 20px;
+    color: azure;
+    cursor: pointer;
+}

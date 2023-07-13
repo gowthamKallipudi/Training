@@ -1,0 +1,19 @@
+.each-booked-ticket {
+    background-color: blanchedalmond;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: 10px;
+    text-align: center;
+    padding: 5px;
+}
+
+.bookings-container button{
+    background-color: azure;
+    height: 40px;
+    width: 100px;
+    margin: 10px;
+}
+
+.bookings-container button:hover {
+    background-color: rgb(145, 172, 172);
+}

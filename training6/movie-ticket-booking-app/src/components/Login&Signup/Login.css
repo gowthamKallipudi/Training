@@ -1,10 +1,42 @@
 .login-container {
-    background-color: rgb(186, 169, 202);
-    height: 200px;
+    background-color: rgb(160, 146, 173);
+    height: 275px;
     width: fit-content;
     float: left;
     padding: 30px;
     text-align: end;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
+}
+
+.login-container input {
+    height: 18px;
+    border: solid black 1.5px;
+    margin: 5px;
+    border-radius: 3px;
+}
+
+.login-container button {
+    border: solid rgb(154, 184, 184) 2px;
+    background-color: rgb(138, 117, 156);
+    height: 40px;
+    width: 120px;
+    border-radius: 5px;
+    margin: 5px;
+    color: white;
+    margin-top: 10px;
+}
+
+.login-container button:hover {
+    border: solid rgb(159, 180, 194) 2px;
+    background-color: rgb(185, 163, 208);
+    height: 40px;
+    width: 120px;
+    border-radius: 5px;
+    color: white;
+}
+
+.title {
+    text-align: center;
+    font-size: large;
 }

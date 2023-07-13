@@ -9,3 +9,15 @@ export const signUpUser = async (signupdata) => {
     const data = await response.json()
     return data;
 }
+
+export const editUser = async (editData) => {
+    const response = await fetch("http://localhost:8080/user/editUser", {
+        method: "PUT",
+        headers: {
+            "content-type": "application/json",
+        },
+        body: JSON.stringify(editData)
+    })
+    // const data = await response.json()
+    return response.text();
+}

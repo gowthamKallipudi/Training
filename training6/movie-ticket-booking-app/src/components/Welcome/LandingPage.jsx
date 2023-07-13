@@ -7,7 +7,7 @@ import TheatreListingPage from "./TheatreListingPage";
 import { auth } from "../../authentication";
 import ProfileBar from "./ProfileBar";
 import SeatSelection from "./SeatSelection";
-import { fetchCapacityBookings } from "../../API-Services/BookingsService";
+import { addBooking, fetchCapacityBookings } from "../../API-Services/BookingsService";
 
 const defaultBookingData = {
     "userName": "",
@@ -31,7 +31,6 @@ const LandingPage = () => {
     const [seatCapacity, setSeatCapacity] = useState(null)
     const [rowCapacity, setRowCapacity] = useState(null)
     const [bookedSeats, setBookedSeats] = useState(null)
-    const [currentBooking, setCurrentBooking] = useState([])
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -63,6 +62,12 @@ const LandingPage = () => {
         setMovieName(null);
     }
 
+    const addTicketBooking = async (current) => {
+        const data = await addBooking(current)
+        console.log(data);
+        navigate("/bookings")
+    }
+
     const filterMovies = (term) => {
         setCurrentMovies(fetchedMovies.filter((eachMovie) => {
             return eachMovie.name.includes(term.toLowerCase())
@@ -89,8 +94,8 @@ const LandingPage = () => {
     }
 
     const CallBackSeatsPage = (childData) => {
-        setCurrentBooking(childData)
-        setBookingData({...bookingData, seatNo: childData})
+        setBookingData({...bookingData, seatNo: childData, userName: auth.getState().username})
+        addTicketBooking({...bookingData, seatNo: childData, userName: auth.getState().username})
         setSeatPageState(false)
     }
 
@@ -104,11 +109,13 @@ const LandingPage = () => {
     }
 
     if(locationPageState === true){
-        return <Locations callbackfunction={CallBackLocation} />
+        return <Locations callbackfunction={CallBackLocation} type="land" />
     }
 
-    if(movieName !== null) {
+    if(movieName !== null && auth.getState().userName !== "") {
         return <TheatreListingPage movieName={movieName} callbackfunction={CallBackTheatrePage} callbackfunction2={CallBackTheatreData} />
+    } else if(movieName !== null){
+        navigate("/login-signup")
     }
 
     if(profilePageState) {
@@ -117,15 +124,23 @@ const LandingPage = () => {
 
     return (
         <>
-            <div>
-                <button type="button" onClick={() => {fetchAllMovies(); setSearchTerm("")}}>dashboard</button>
-                <input type="text" name="search" value={searchTerm} onChange={(e) => {setSearchTerm(e.target.value); filterMovies(e.target.value)}} />
+            <div className="navbar">
+                <div>
+                    <button type="button" onClick={() => {fetchAllMovies(); setSearchTerm("")}}>Dashboard</button>
+                </div>
+                <div>
+                    <input type="text" name="search" value={searchTerm} onChange={(e) => {setSearchTerm(e.target.value); filterMovies(e.target.value)}} placeholder=" Enter movie to search" />
+                </div>
+                <div>
                 <button type="submit" onClick={() => {setLocationPageState(true)}}>Location</button>
-                {auth.getState().userName === "" ? 
-                <button type="button" onClick={() => {navigate("/login-signup")}}>login</button>
-                :
-                <button type="button" onClick={() => {setProfilePageState(!profilePageState)}}>Profile</button>
-                }
+                </div>
+                <div>
+                    {auth.getState().userName === "" ? 
+                    <button type="button" onClick={() => {navigate("/login-signup")}}>Login</button>
+                    :
+                    <button type="button" onClick={() => {setProfilePageState(!profilePageState)}}>Profile</button>
+                    }
+                </div>
             </div>
             <div className="movies-container">
                 {currentMovies != null && 

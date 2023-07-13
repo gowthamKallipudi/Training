@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { fetchLocations } from "../../API-Services/LocationService";
+import "./Location.css";
 
-const Locations = ({callbackfunction}) => {
+const Locations = ({callbackfunction, type = ""}) => {
     const [allLocations, setAllLocations] = useState(null)
 
     useEffect(() => {
@@ -15,14 +16,14 @@ const Locations = ({callbackfunction}) => {
     }
 
     return(
-        <>
-            <p onClick={() => {callbackfunction("")}}>All Locations</p>
+        <div className="location-container">
+            {type === "land" && <div className="each-location" onClick={() => {callbackfunction("")}}>All Locations</div>}
             {allLocations !== null && allLocations.map((eachLocation, index) => {
                 return (
-                    <p key={index} onClick={() => {callbackfunction(eachLocation)}}>{eachLocation}</p>
+                    <div className="each-location" key={index} onClick={() => {callbackfunction(eachLocation)}}>{eachLocation}</div>
                 )
             })}
-        </>
+        </div>
     )
 
 }

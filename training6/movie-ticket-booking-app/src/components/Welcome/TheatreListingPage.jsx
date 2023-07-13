@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { fetchTheatresByMovie } from "../../API-Services/TheatreService";
+import { fetchTheatreByLocation, fetchTheatresByMovie } from "../../API-Services/TheatreService";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Locations from "./Locations";
@@ -11,6 +11,7 @@ const TheatreListingPage = ({movieName, callbackfunction, callbackfunction2}) =>
     const [show, setShow] = useState(null);
     const [location, setLocation] = useState(null);
     const [locationPageState, setLocationPageState] = useState(false);
+    const [currTheatre, setCurrTheatre] = useState(null);
 
     useEffect(() => {
         fetchTheatres()
@@ -21,9 +22,17 @@ const TheatreListingPage = ({movieName, callbackfunction, callbackfunction2}) =>
         setTheatres(data)
     }
 
+    const fetchTheatreLocation = async (current) => {
+        const data = await fetchTheatreByLocation(movieName, current)
+        setTheatres(data)
+    }
+
     const CallBackLocation = (childData) => {
         setLocationPageState(false)
-        setLocation(childData)
+        if(childData !== ""){
+            fetchTheatreLocation(childData)
+            setLocation(childData)
+        }
     }
 
     if(locationPageState === true){
@@ -40,16 +49,16 @@ const TheatreListingPage = ({movieName, callbackfunction, callbackfunction2}) =>
                     <div key={index}>
                         <p>{eachTheatre.name}</p>
                         {eachTheatre.show.map((eachShow, index) => {
-                            if(show === eachShow){
+                            if(show === eachShow && eachTheatre.name === currTheatre){
                                 return(
                                     <div className="each-show">
-                                        <button style={{backgroundColor: "orangered"}} type="button" onClick={() => {setShow(eachShow)}}>{eachShow}</button>
+                                        <button style={{backgroundColor: "orangered"}} type="button" onClick={() => {setShow(eachShow); setCurrTheatre(eachTheatre.name)}}>{eachShow}</button>
                                     </div>
                                 );
                             }
                             return(
                                 <div className="each-show">
-                                    <button type="button" onClick={() => {setShow(eachShow)}}>{eachShow}</button>
+                                    <button type="button" onClick={() => {setShow(eachShow); setCurrTheatre(eachTheatre.name)}}>{eachShow}</button>
                                 </div>
                             );
                         })}

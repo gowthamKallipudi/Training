@@ -1,0 +1,53 @@
+.profile-container button {
+    background-color: rgb(132, 125, 116);
+    border: none;
+    color: aliceblue;
+    padding: 15px 30px;
+    border-radius: 5px;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.profile-container button:hover {
+    background-color: #4caf50;
+    padding: 13.5px 28px;
+    border: 2px solid rgb(255, 255, 255);
+}
+
+.profile-table {
+    margin: auto;
+    margin-top: 2%;
+    border-collapse: collapse;
+    width: 50%;
+  }
+  
+  .profile-table th,
+  td {
+    text-align: center;
+    width: 12.5%;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    background-color: rgb(140, 155, 181);
+    color: rgb(26, 27, 27);
+    
+  }
+  
+  .profile-table button {
+    background-color: rgb(212, 127, 97);
+    border: none;
+    color: rgb(43, 48, 51);
+    padding: 15px 30px;
+    border-radius: 5px;
+  }
+  
+  .profile-table button:hover {
+    background-color: #85db88;
+    padding: 13.5px 28px;
+    border: 2px solid rgb(255, 255, 255);
+  }
+  
+  .profile-table input[type=text] {
+    border:2px solid rgb(132, 121, 161);
+    border-radius: 5px;
+    padding: 7px;
+  }
