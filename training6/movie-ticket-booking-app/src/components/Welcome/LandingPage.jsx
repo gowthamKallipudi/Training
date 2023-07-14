@@ -99,8 +99,12 @@ const LandingPage = () => {
         setSeatPageState(false)
     }
 
+    const CallBackSeatReturn = () => {
+        setSeatPageState(false)
+    }
+
     if(seatPageState) {
-        return <SeatSelection rowCapacity={rowCapacity} seatCapacity={seatCapacity} bookedSeats={bookedSeats} callbackfunction={CallBackSeatsPage} />
+        return <SeatSelection rowCapacity={rowCapacity} seatCapacity={seatCapacity} bookedSeats={bookedSeats} callbackfunction={CallBackSeatsPage} callbackreturn={CallBackSeatReturn} />
     }
 
     const CallBackTheatreData = (childData) => {
@@ -118,12 +122,9 @@ const LandingPage = () => {
         navigate("/login-signup")
     }
 
-    if(profilePageState) {
-        return <ProfileBar callbackfunction={CallBackProfile}/>
-    }
-
     return (
         <>
+            {profilePageState && <ProfileBar callbackfunction={CallBackProfile}/>}
             <div className="navbar">
                 <div>
                     <button type="button" onClick={() => {fetchAllMovies(); setSearchTerm("")}}>Dashboard</button>
@@ -132,7 +133,7 @@ const LandingPage = () => {
                     <input type="text" name="search" value={searchTerm} onChange={(e) => {setSearchTerm(e.target.value); filterMovies(e.target.value)}} placeholder=" Enter movie to search" />
                 </div>
                 <div>
-                <button type="submit" onClick={() => {setLocationPageState(true)}}>Location</button>
+                <button type="submit" onClick={() => {setLocationPageState(true)}}>{(bookingData.region !== "") ? bookingData.region : "Location"}</button>
                 </div>
                 <div>
                     {auth.getState().userName === "" ? 
@@ -148,13 +149,13 @@ const LandingPage = () => {
                         return (
                             <div key={index} className="each-movie">
                                 <img src={eachMovie.imageurl} alt={eachMovie.name} onPointerOver={() => {console.log(eachMovie.name)}}/>
-                                <p>{eachMovie.name}</p>
-                                <p>{eachMovie.language}</p>
-                                <p>{eachMovie.releaseDate}</p>
-                                <p>{eachMovie.duration}</p>
-                                <p>{eachMovie.genre}</p>
-                                <p>{eachMovie.description}</p>
-                                <p>{eachMovie.casting}</p>
+                                <p>Movie Name : {eachMovie.name}</p>
+                                <p>Language : {eachMovie.language}</p>
+                                <p>Release Date : {eachMovie.releaseDate}</p>
+                                <p>Duration{eachMovie.duration}</p>
+                                <p>Genre : {eachMovie.genre}</p>
+                                <p>Description : {eachMovie.description}</p>
+                                <p>Casting : {eachMovie.casting}</p>
                                 <button type="submit" onClick={() => {setMovieName(eachMovie.name)}}>Book Ticket</button>
                             </div>
                         )

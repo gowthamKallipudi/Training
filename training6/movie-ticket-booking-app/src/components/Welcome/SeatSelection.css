@@ -1,7 +1,48 @@
+.seats {
+    text-align: center;
+}
+
 .seats button {
     border: none;
     width: 52px;
     height: 30px;
     border: solid skyblue 2px;
     background-color: seashell;
+}
+
+.back-button {
+    border: solid black 2px;
+    background-color: cyan;
+    height: 40px;
+    width: 120px;
+    margin: 15px;
+    border-radius: 5px;
+}
+
+.back-button:hover {
+    background-color: rgb(60, 220, 220);
+}
+
+.selected-seats {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.book-button {
+    border: solid black 2px;
+    background-color: rgb(14, 163, 163);
+    height: 40px;
+    width: 120px;
+    margin: 15px;
+    border-radius: 5px;
+}
+
+.book-button:hover {
+    background-color: rgb(108, 223, 231);
+}
+
+.each-seat {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: beige;
 }

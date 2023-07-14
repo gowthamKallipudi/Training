@@ -6,7 +6,7 @@ export const signUpUser = async (signupdata) => {
         },
         body: JSON.stringify(signupdata)
     })
-    const data = await response.json()
+    const data = await response.text()
     return data;
 }
 
@@ -18,6 +18,6 @@ export const editUser = async (editData) => {
         },
         body: JSON.stringify(editData)
     })
-    // const data = await response.json()
-    return response.text();
+    const data = await response.text()
+    return data;
 }

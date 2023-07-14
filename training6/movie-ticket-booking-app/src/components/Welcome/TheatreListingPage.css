@@ -1,8 +1,78 @@
+.theatre-nav {
+    width: 80%;
+    background-color: rgba(0, 0, 0, 0.87);
+    height: 55px;
+    position: fixed;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 10%;
+    padding-right: 10%;
+}
+
+.nav-button {
+    border: none;
+    background-color: rgba(0, 0, 0, 0);
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    width: 200px;
+}
+
+.nav-button:hover {
+    border: none;
+    background-color: rgba(0, 0, 0, 0);
+    color: white;
+    font-size: 21px;
+    cursor: pointer;
+}
+
+.date-picker {
+    border-radius: 5px;
+    height: 30px;
+    width: 200px;
+}
+
+.theatres {
+        padding-top: 55px;
+}
+
 .each-show button {
         border: none;
-        width: 300px;
+        width: 150px;
         height: 30px;
-        border: solid skyblue 2px;
-        background-color: rgb(158, 119, 90);
-        color: azure;
+        border: solid rgba(56, 61, 63, 0.644) 2px;
+        background-color: rgb(221, 203, 190);
+        color: rgb(14, 14, 14);
+        margin: 1px;
+        border-radius: 3px;
+}
+
+.book-button {
+        border: none;
+        height: 40px;
+        width: 120px;
+        border: solid black 2px;
+        background-color: rgb(203, 183, 159);
+        margin: 10px;
+}
+
+.book-button:hover {
+        border: none;
+        height: 40px;
+        width: 120px;
+        border: solid black 2px;
+        background-color: rgb(243, 236, 230);
+}
+
+.each-theatre {
+        display: grid;
+        height: 70px;
+        width: 96%;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+        align-items: center;
+        background-color: bisque;
+        margin: 1%;
+        padding-left: 1%;
+        padding-right: 1%;
 }

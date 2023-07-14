@@ -41,33 +41,40 @@ const TheatreListingPage = ({movieName, callbackfunction, callbackfunction2}) =>
 
     return (
         <div className="theatre-list">
-            <button type="button" onClick={() => {callbackfunction()}}>Dashboard</button>
-            <DatePicker selected={date} name="date" onChange={(currentDate) => {setDate(currentDate);}} />
-            <input type="text" value={location} placeholder="Select the location" onClick={() => {setLocationPageState(true)}} />
-            {theatres !== null && theatres.map((eachTheatre, index) => {
-                return(
-                    <div key={index}>
-                        <p>{eachTheatre.name}</p>
-                        {eachTheatre.show.map((eachShow, index) => {
-                            if(show === eachShow && eachTheatre.name === currTheatre){
+            <div className="theatre-nav">
+                <button className="nav-button" type="button" onClick={() => {callbackfunction()}}>Dashboard</button>
+                <DatePicker className="date-picker" selected={date} name="date" onChange={(currentDate) => {setDate((currentDate >= date) ? currentDate : date)}} />
+                <button className="nav-button" onClick={() => {setLocationPageState(true)}}>{(location !== null) ? location : "Select Location"}</button>
+            </div>
+            <div className="theatres">
+                {theatres !== null && theatres.map((eachTheatre, index) => {
+                    return(
+                        <div key={index} className="each-theatre">
+                            <div style={{fontSize: "large", fontWeight: "bold"}}>{eachTheatre.name}</div>
+                            {eachTheatre.show.map((eachShow, index) => {
+                                if(show === eachShow && eachTheatre.name === currTheatre){
+                                    return(
+                                        <div className="each-show">
+                                            <button style={{backgroundColor: "orange"}} type="button" onClick={() => {setShow(eachShow); setCurrTheatre(eachTheatre.name)}}>{eachShow}</button>
+                                        </div>
+                                    );
+                                }
                                 return(
                                     <div className="each-show">
-                                        <button style={{backgroundColor: "orangered"}} type="button" onClick={() => {setShow(eachShow); setCurrTheatre(eachTheatre.name)}}>{eachShow}</button>
+                                        <button type="button" onClick={() => {setShow(eachShow); setCurrTheatre(eachTheatre.name)}}>{eachShow}</button>
                                     </div>
                                 );
+                            })}
+                            {(eachTheatre.show.includes(show) && location !== null) ?
+                            <div>
+                            <button className="book-button" type="button" onClick={() => {callbackfunction2({date: date.toISOString().slice(0,10), show: show, location: location, movie: movieName, theatre: eachTheatre.name})}}>Book Ticket</button>
+                            </div> :
+                            <div style={{color: "orangered", fontSize: "large"}}>select location and show to book</div>
                             }
-                            return(
-                                <div className="each-show">
-                                    <button type="button" onClick={() => {setShow(eachShow); setCurrTheatre(eachTheatre.name)}}>{eachShow}</button>
-                                </div>
-                            );
-                        })}
-                        {(eachTheatre.show.includes(show) && location !== null) &&
-                        <button type="button" onClick={() => {callbackfunction2({date: date.toISOString().slice(0,10), show: show, location: location, movie: movieName, theatre: eachTheatre.name})}}>Book Ticket</button>
-                        }
-                    </div>
-                );
-            })}
+                        </div>
+                    );
+                })}
+            </div>
         </div>
     );
 }

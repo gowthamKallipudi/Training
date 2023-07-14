@@ -1,0 +1,22 @@
+.profile-bar {
+    background-color: cyan;
+    padding-top: 55px;
+    width: 30vw;
+    height: 92.5vh;
+    margin-left: 70vw;
+    position: fixed;
+}
+
+.profile-bar button {
+    width: 30vw;
+    height: 100px;
+    border: solid lightblue 0.1px;
+    cursor: pointer;
+    background-color: cyan;
+    font-weight: bolder;
+}
+
+.profile-bar button:hover {
+    background-color: lightblue;
+    border: solid rgb(0, 0, 0) 1px;
+}

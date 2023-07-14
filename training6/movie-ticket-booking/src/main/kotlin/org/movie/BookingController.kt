@@ -1,6 +1,7 @@
 package org.movie
 
 import jakarta.inject.Inject
+import jakarta.ws.rs.DELETE
 import jakarta.ws.rs.GET
 import jakarta.ws.rs.POST
 import jakarta.ws.rs.Path
@@ -32,6 +33,12 @@ class BookingController {
                                     @QueryParam("show") show: String,
                                     @QueryParam("date") date: Date): BookedSeats? {
         return bookingRepository?.fetchSeatsByTheatreShowDate(theatre, show, date)
+    }
+
+    @DELETE
+    @Path("/deleteBooking/{id}")
+    fun deleteBooking(@PathParam("id") id: Int): Unit? {
+        return bookingRepository?.deleteBooking(id)
     }
 
 }

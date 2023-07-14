@@ -2,7 +2,8 @@ package org.movie
 
 import java.sql.Date
 
-data class Booking(var userName: String,
+data class Booking(var id:Int,
+                   var userName: String,
                    var theatre: String,
                    var timing: String,
                    var region: String,

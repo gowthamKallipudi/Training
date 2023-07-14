@@ -13,17 +13,19 @@ const defaultValues = {
 
 const SignUp = () => {
     const [signupCredentials, setSignupCredentials] = useState(defaultValues)
+    const [prompt, setPrompt] = useState({state: false, message: ""})
 
     const signup = async () => {
         console.log(signupCredentials);
         const data = await signUpUser(signupCredentials)
         console.log(data);
         setSignupCredentials(defaultValues)
+        setPrompt({state: true, message: data})
     }
 
     return (
         <>
-            <div className="signup-container">
+            <div className="signup-container" onClick={() => {setPrompt({state: false, message: ""})}} >
                 <div className="title">SignUp</div>
                 <div>
                     <label>User Name : </label>
@@ -76,6 +78,9 @@ const SignUp = () => {
                 <div>
                     <button type="submit" onClick={() => {signup()}}>SignUp</button>
                 </div>
+                {prompt.state && <div style={{color: "red", fontSize: "large", margin: "5px"}}>
+                    {prompt.message}
+                 </div>}
             </div>
         </>
     );

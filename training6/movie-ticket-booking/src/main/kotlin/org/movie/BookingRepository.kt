@@ -3,6 +3,7 @@ package org.movie
 import io.agroal.api.AgroalDataSource
 import jakarta.enterprise.context.ApplicationScoped
 import jakarta.inject.Inject
+import java.sql.Date
 
 @ApplicationScoped
 class BookingRepository {
@@ -128,7 +129,8 @@ class BookingRepository {
                                 }
                             }
                         }
-                        bookingsList.add(Booking(userName = userName,
+                        bookingsList.add(Booking(id = resultSet.getInt("id"),
+                                userName = userName,
                                 theatre = theatre,
                                 timing = resultSet.getString("timings"),
                                 region = region,
@@ -142,7 +144,7 @@ class BookingRepository {
         return bookingsList
     }
 
-    fun fetchSeatsByTheatreShowDate(theatre: String, show: String, date: java.sql.Date): BookedSeats {
+    fun fetchSeatsByTheatreShowDate(theatre: String, show: String, date: Date): BookedSeats {
         var theatreId: Int = 0
         var seatCapacity: Int = 0
         var rowCapacity: Int = 0
@@ -150,8 +152,8 @@ class BookingRepository {
             connection.prepareStatement("select * from theatre where name = ?").use { stmt ->
                 stmt.setString(1, theatre)
                 stmt.executeQuery().use { resultSet ->
-                    if (resultSet.next()) {
-                        if (resultSet.getString("show") == show) {
+                    while (resultSet.next()) {
+                        if (resultSet.getString("show").compareTo(show) == 0) {
                             theatreId = resultSet.getInt("id")
                             seatCapacity = resultSet.getInt("seatcapacity")
                             rowCapacity = resultSet.getInt("rowcapacity")
@@ -175,5 +177,15 @@ class BookingRepository {
             }
         }
         return BookedSeats(seatCapacity, rowCapacity, seatNo)
+    }
+
+    fun deleteBooking(id: Int) {
+        dataSource?.connection?.use { connection ->
+            connection.prepareStatement("delete from bookings where id = ?").use { preparedStatement ->
+                preparedStatement.setInt(1, id)
+
+                preparedStatement.execute()
+            }
+        }
     }
 }

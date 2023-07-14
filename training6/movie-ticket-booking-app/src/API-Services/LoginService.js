@@ -9,7 +9,8 @@ export const loginUser = async (loginData) => {
         body: JSON.stringify(loginData)
     })
     const data = await response.json();
-    if(data !== false) {
+    console.log(data)
+    if(data.username !== "User name Password doesn't matched !!!") {
         auth.dispatch({
             type: "Login",
             payload: data,

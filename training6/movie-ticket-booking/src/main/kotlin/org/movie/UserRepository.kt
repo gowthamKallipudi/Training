@@ -10,42 +10,75 @@ class UserRepository {
     @Inject
     var dataSource : AgroalDataSource? = null
 
-    fun addUser(user: User?): Boolean {
+    fun addUser(user: User): String {
+        dataSource?.connection?.use { connection ->
+            connection.prepareStatement("select * from users where username = ?").use { preparedStatement ->
+                preparedStatement.setString(1, user.username)
+                preparedStatement.executeQuery().use { resultSet ->
+                    if(resultSet.next()) {
+                        return "User Name already exist !!!"
+                    }
+                }
+            }
+        }
+        dataSource?.connection?.use { connection ->
+            connection.prepareStatement("select * from users where email = ?").use { preparedStatement ->
+                preparedStatement.setString(1, user.email)
+                preparedStatement.executeQuery().use { resultSet ->
+                    if(resultSet.next()) {
+                        return "Email Id already exist !!!"
+                    }
+                }
+            }
+        }
+        dataSource?.connection?.use { connection ->
+            connection.prepareStatement("select * from users where phone = ?").use { preparedStatement ->
+                preparedStatement.setLong(1, user.phone)
+                preparedStatement.executeQuery().use { resultSet ->
+                    if(resultSet.next()) {
+                        return "Phone Number already exist !!!"
+                    }
+                }
+            }
+        }
         var userState: Boolean = false
         var id: Int = 0
         dataSource?.connection?.use { conn ->
             conn.prepareStatement("insert into users (`username`, `firstname`, `lastname`, `email`, `phone`)" +
                     " VALUES (?, ?, ?, ?, ?)").use { stmt ->
-                stmt.setString(1, user?.username)
-                stmt.setString(2, user?.firstname)
-                stmt.setString(3, user?.lastname)
-                stmt.setString(4, user?.email)
-                stmt.setLong(5, user?.phone!!)
+                stmt.setString(1, user.username)
+                stmt.setString(2, user.firstname)
+                stmt.setString(3, user.lastname)
+                stmt.setString(4, user.email)
+                stmt.setLong(5, user.phone)
 
-                if(stmt.executeUpdate() == 1) {
+                if (stmt.executeUpdate() == 1) {
                     userState = true
                 }
             }
             conn.prepareStatement("select id from users where username = ?").use { stmt ->
-                stmt.setString(1, user?.username)
+                stmt.setString(1, user.username)
                 stmt.executeQuery().use { rs ->
-                    if(rs.next()) {
+                    if (rs.next()) {
                         id = rs.getInt("id")
                     }
                 }
             }
             conn.prepareStatement("insert into password (`password`, `userid`) values (?, ?)").use { stmt ->
-                stmt.setString(1, user?.password)
+                stmt.setString(1, user.password)
                 stmt.setInt(2, id)
 
                 stmt.executeUpdate()
             }
         }
-        return userState
+        return if(userState) {
+            "User registered successfully"
+        } else {
+            "User not registered"
+        }
     }
 
     fun checkUser(login: Login?): Any? {
-        val loginState: Boolean = false
         var id: Int
         var user: User
         dataSource?.connection?.use { conn ->
@@ -77,7 +110,7 @@ class UserRepository {
                 }
             }
         }
-        return loginState
+        return Error()
     }
 
     fun editUser(user: User): String {

@@ -2,9 +2,28 @@
     background-color: blanchedalmond;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    margin: 10px;
-    text-align: center;
+    margin: auto;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    text-align: start;
     padding: 5px;
+    background-image: url(D:\Training\training6\movie-ticket-booking-app\public\ticket.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    height:200px;
+    width: 550px;
+    padding-top: 50px;
+    padding-right: 70px;
+    padding-left: 50px;
+}
+
+.bookings {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.bookings-container {
+    width: 100%;
 }
 
 .bookings-container button{
@@ -16,4 +35,15 @@
 
 .bookings-container button:hover {
     background-color: rgb(145, 172, 172);
+}
+
+.each-booked-ticket button {
+    height: 35px;
+    border: solid red 2px;
+    margin: 0px;
+    background-color: rgb(237, 237, 198);
+}
+
+.each-booked-ticket button:hover {
+    background-color: rgb(234, 199, 157);
 }

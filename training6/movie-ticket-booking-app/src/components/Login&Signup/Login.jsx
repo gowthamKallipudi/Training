@@ -10,16 +10,19 @@ const defaultValues = {
 
 const Login = () => {
     const [loginCredentials, setLoginCredentials] = useState(defaultValues)
+    const [prompt, setPrompt] = useState({state: false, message: ""})
     const navigate = useNavigate();
 
     const loginCheck = async () => {
         console.log(loginCredentials)
         const data = await loginUser(loginCredentials)
         console.log(data);
-        setLoginCredentials(defaultValues)
-        if(data !== false) {
+        if(data.username !== "User name Password doesn't matched !!!") {
             navigate("/dashboard")
+        } else {
+            setPrompt({state: true, message: data.username})
         }
+        setLoginCredentials(defaultValues)
     }
 
     return (
@@ -32,7 +35,8 @@ const Login = () => {
                      name="username" 
                      placeholder="Enter your user name" 
                      value={loginCredentials.username} 
-                     onChange={(e) => {setLoginCredentials({...loginCredentials, [e.target.name] : e.target.value})}} />
+                     onChange={(e) => {setLoginCredentials({...loginCredentials, [e.target.name] : e.target.value})}}
+                     onClick={() => {setPrompt({state: false, message: ""})}} />
                 </div>
                 <div>
                     <label>Password : </label>
@@ -40,11 +44,15 @@ const Login = () => {
                      name="password" 
                      placeholder="Enter your password" 
                      value={loginCredentials.password} 
-                     onChange={(e) => {setLoginCredentials({...loginCredentials, [e.target.name]: e.target.value})}} />
+                     onChange={(e) => {setLoginCredentials({...loginCredentials, [e.target.name]: e.target.value})}}
+                     onClick={() => {setPrompt({state: false, message: ""})}} />
                 </div>
                 <div>
                     <button type="submit" onClick={() => {loginCheck()}}>Login</button>
                 </div>
+                {prompt.state && <div style={{color: "rgb(216, 38, 38)", fontSize: "large", margin: "5px"}}>
+                    {prompt.message}
+                 </div>}
             </div>
         </>
     );

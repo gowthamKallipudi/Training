@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./SeatSelection.css";
 
-const SeatSelection = ({seatCapacity, rowCapacity, bookedSeats, callbackfunction}) => {
+const SeatSelection = ({seatCapacity, rowCapacity, bookedSeats, callbackfunction, callbackreturn}) => {
     const [current, setCurrent] = useState([]);
 
     const noOfRows = seatCapacity/rowCapacity
@@ -15,18 +15,37 @@ const SeatSelection = ({seatCapacity, rowCapacity, bookedSeats, callbackfunction
     }
 
     return(
-        <div className="seats">
-            {seats.map((eachRow, index) => {
-                return(
-                    <div key={index}>
-                        {eachRow.map((eachSeat, index) => {
-                            if(bookedSeats.includes(eachSeat)){
+        <div>
+            <button className="back-button" type="button" onClick={() => {callbackreturn()}}>Dashboard</button>
+            <div className="seats">
+                {seats.map((eachRow, index) => {
+                    return(
+                        <div key={index}>
+                            {eachRow.map((eachSeat, index) => {
+                                if(bookedSeats.includes(eachSeat)){
+                                    return (
+                                        <button key={index} style={{backgroundColor: "red"}}>|{eachSeat}|</button>
+                                    )
+                                } else if(current.includes(eachSeat)) {
+                                    return (
+                                        <button key={index} style={{backgroundColor: "yellow"}} onClick={() => {
+                                            if(current.includes(eachSeat)){
+                                                const array = []
+                                                for(let i = 0; i < current.length; i++){
+                                                    if(current[i] !== eachSeat){
+                                                        array.push(current[i])
+                                                    }
+                                                }
+                                                setCurrent(array)
+                                            }
+                                            else {
+                                                setCurrent([...current, eachSeat])
+                                            }
+                                        }}>|{eachSeat}|</button>
+                                    )
+                                }
                                 return (
-                                    <button key={index} style={{backgroundColor: "red"}}>|{eachSeat}|</button>
-                                )
-                            } else if(current.includes(eachSeat)) {
-                                return (
-                                    <button key={index} style={{backgroundColor: "yellow"}} onClick={() => {
+                                    <button key={index} style={{backgroundColor: "blue"}} onClick={() => {
                                         if(current.includes(eachSeat)){
                                             const array = []
                                             for(let i = 0; i < current.length; i++){
@@ -41,39 +60,25 @@ const SeatSelection = ({seatCapacity, rowCapacity, bookedSeats, callbackfunction
                                         }
                                     }}>|{eachSeat}|</button>
                                 )
-                            }
-                            return (
-                                <button key={index} style={{backgroundColor: "blue"}} onClick={() => {
-                                    if(current.includes(eachSeat)){
-                                        const array = []
-                                        for(let i = 0; i < current.length; i++){
-                                            if(current[i] !== eachSeat){
-                                                array.push(current[i])
-                                            }
-                                        }
-                                        setCurrent(array)
-                                    }
-                                    else {
-                                        setCurrent([...current, eachSeat])
-                                    }
-                                }}>|{eachSeat}|</button>
-                            )
-                        })}
-                    </div>
-                );
-            })}
-            <br />
-            {seats[0].map((eachRow, index) => {
-                return (
-                    <span key={index}>_-_-_-_-</span>
-                )   
-            })}
+                            })}
+                        </div>
+                    );
+                })}
+                <br />
+                {seats[0].map((eachRow, index) => {
+                    return (
+                        <span key={index}>_-_-_-_-</span>
+                    )   
+                })}
+            </div>
+            <div className="selected-seats">
             {current.map(each => {
-                return(
-                    <p>{each}</p>
-                )
-            })}
-            <button type="button" onClick={() => {callbackfunction(current)}}>Book</button>
+                    return(
+                        <div className="each-seat">{each}</div>
+                    )
+                })}
+            </div>
+            <button className="book-button" type="button" onClick={() => {callbackfunction(current)}}>Book</button>
         </div>
     );
 

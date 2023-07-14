@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { auth, checkAuth } from "../../authentication";
-import { fetchBookingsById } from "../../API-Services/BookingsService";
+import { deleteBooking, fetchBookingsById } from "../../API-Services/BookingsService";
 import { Navigate, useNavigate } from "react-router-dom";
 import "./Bookings.css"
 
@@ -22,24 +22,39 @@ const Bookings = () => {
         setBookings(data)
     }
 
+    const deleteBookingById = async (id) => {
+        const data = await deleteBooking(id);
+        console.log(data)
+    }
+
     return (
         <div className="bookings-container">
             <button type="button" onClick={() => {navigate("/dashboard")}}>Dashboard</button>
-            {bookings === null ? <div>No Bookings Found</div> : <div>
-                {bookings.map((eachBooking) => {
-                    return (
-                        <div className="each-booked-ticket">
-                            <div>{eachBooking.userName}</div>
-                            <div>{eachBooking.theatre}</div>
-                            <div>{eachBooking.timing}</div>
-                            <div>{eachBooking.region}</div>
-                            <div>{eachBooking.movieName}</div>
-                            <div>{eachBooking.date}</div>
-                            <div>{eachBooking.seatNo}</div>
-                        </div>
-                    );
-                })}
-                </div>}
+            <div>
+                {bookings === null ? <div>No Bookings Found</div> : <div className="bookings">
+                    {bookings.map((eachBooking) => {
+                        const currentDate = (new Date()).toISOString().slice(0, 10)
+                        return (
+                            <div className="each-booked-ticket" key={eachBooking.id}>
+                                <div>User Name : {eachBooking.userName}</div>
+                                <div>Theatre : {eachBooking.theatre}</div>
+                                <div>Show : {eachBooking.timing}</div>
+                                <div>Region : {eachBooking.region}</div>
+                                <div>Movie Name : {eachBooking.movieName}</div>
+                                <div>Show Date : {eachBooking.date}</div>
+                                <div>Seat No : {eachBooking.seatNo}</div>
+                                <div>
+                                    {(currentDate <= eachBooking.date) ? 
+                                    <button type="button" onClick={() => {deleteBookingById(eachBooking.id); fetchBookings()}}>Cancel</button>
+                                    :
+                                    <div style={{color: "orange", fontSize: "large"}}>Movie Completed</div>
+                                    }
+                                </div>
+                            </div>
+                        );
+                    })}
+                    </div>}
+            </div>
         </div>
     );
 }
