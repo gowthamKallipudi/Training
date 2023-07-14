@@ -143,12 +143,12 @@ const LandingPage = () => {
                     }
                 </div>
             </div>
-            <div className="movies-container">
+            <div className="movies-container" onClick={() => {setProfilePageState(false)}}>
                 {currentMovies != null && 
                     currentMovies.map((eachMovie, index) => {
                         return (
                             <div key={index} className="each-movie">
-                                <img src={eachMovie.imageurl} alt={eachMovie.name} onPointerOver={() => {console.log(eachMovie.name)}}/>
+                                <img src={eachMovie.imageurl} alt={eachMovie.name} />
                                 <p>Movie Name : {eachMovie.name}</p>
                                 <p>Language : {eachMovie.language}</p>
                                 <p>Release Date : {eachMovie.releaseDate}</p>
